@@ -1,0 +1,23 @@
+<p-tree
+  [value]="folders"
+  selectionMode="single"
+  [(selection)]="selectedFolder"
+  [contextMenu]="options"
+></p-tree>
+
+<p-contextMenu #options [model]="optionMenus"></p-contextMenu>
+
+<p-dialog
+  [header]="dialogTitle"
+  [(visible)]="displayDialog"
+  modal="true"
+  [draggable]="false"
+  [style]="{ width: '30vw' }"
+>
+  <input type="text" value="{{ renameFolderName }}" pInputText />
+
+  <p-footer>
+    <button pButton type="button" [label]="footerSuccessBtn"></button>
+    <button pButton type="button" label="Cancel"></button>
+  </p-footer>
+</p-dialog>

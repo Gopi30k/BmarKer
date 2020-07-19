@@ -1,0 +1,81 @@
+{
+  "data": [
+    {
+      "label": "My Collections",
+      "data": "My Collections",
+      "expandedIcon": "pi pi-folder-open",
+      "collapsedIcon": "pi pi-folder",
+      "children": [
+        {
+          "label": "Dev Links",
+          "data": "Dev Links",
+          "expandedIcon": "pi pi-folder-open",
+          "collapsedIcon": "pi pi-folder",
+          "children": [
+            {
+              "label": "Office Dev",
+              "data": "Office Dev",
+              "expandedIcon": "pi pi-folder-open",
+              "collapsedIcon": "pi pi-folder"
+            },
+            {
+              "label": "Personal Dev",
+              "data": "Personal Dev",
+              "expandedIcon": "pi pi-folder-open",
+              "collapsedIcon": "pi pi-folder"
+            }
+          ]
+        },
+        {
+          "label": "Design Resources",
+          "data": "Design Resources",
+          "expandedIcon": "pi pi-folder-open",
+          "collapsedIcon": "pi pi-folder",
+          "children": [
+            {
+              "label": "Pinterest Links",
+              "data": "Pinterest Links",
+              "expandedIcon": "pi pi-folder-open",
+              "collapsedIcon": "pi pi-folder"
+            },
+            {
+              "label": "Dribble Links",
+              "data": "Dribble Links",
+              "expandedIcon": "pi pi-folder-open",
+              "collapsedIcon": "pi pi-folder"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Pictures",
+      "data": "Pictures Folder",
+      "expandedIcon": "pi pi-folder-open",
+      "collapsedIcon": "pi pi-folder",
+      "children": [
+        {
+          "label": "barcelona.jpg",
+          "icon": "pi pi-image",
+          "data": "Barcelona Photo"
+        },
+        {
+          "label": "logo.jpg",
+          "icon": "pi pi-image",
+          "data": "PrimeFaces Logo"
+        },
+        {
+          "label": "primeui.png",
+          "icon": "pi pi-image",
+          "data": "PrimeUI Logo"
+        }
+      ]
+    },
+    {
+      "label": "Movies",
+      "data": "Movies Folder",
+      "expandedIcon": "pi pi-folder-open",
+      "collapsedIcon": "pi pi-folder"
+    }
+  ]
+}
