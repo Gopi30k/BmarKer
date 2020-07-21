@@ -1,0 +1,37 @@
+<p-tree
+  [value]="folders"
+  selectionMode="single"
+  [(selection)]="selectedFolder"
+  [contextMenu]="options"
+  [draggableNodes]="true"
+  [droppableNodes]="true"
+  draggableScope="self"
+  droppableScope="self"
+></p-tree>
+
+<p-contextMenu #options appendTo="body" [model]="optionMenus"></p-contextMenu>
+
+<p-dialog
+  [header]="dialogTitle"
+  [(visible)]="folderActionDialog"
+  modal="true"
+  [draggable]="false"
+  [style]="{ width: '30vw' }"
+>
+  <input type="text" [(ngModel)]="folderNameInput" pInputText />
+
+  <p-footer>
+    <button
+      pButton
+      type="button"
+      [label]="footerSuccessBtn"
+      (click)="onSuccessBtnClick()"
+    ></button>
+    <button
+      pButton
+      type="button"
+      label="Cancel"
+      (click)="onCancelBtnClick()"
+    ></button>
+  </p-footer>
+</p-dialog>

@@ -1,0 +1,13 @@
+/* #fixed {
+  background: gray;
+  overflow: hidden;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+} */
+
+/* :host >>> p-tree {
+  position: fixed;
+} */
