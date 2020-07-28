@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { MenuItem, TreeNode, TreeDragDropService } from "primeng/api";
 import { FolderService } from "../folder.service";
-
+import { Router } from "@angular/router";
+import { v4 as uuidv4 } from "uuid";
 @Component({
   selector: "app-folder-structure",
   templateUrl: "./folder-structure.component.html",
@@ -17,12 +18,16 @@ export class FolderStructureComponent implements OnInit {
   footerSuccessBtn: string = "";
   folderActionDialog: boolean = false;
 
-  constructor(private folderService: FolderService) {}
+  constructor(private folderService: FolderService, private router: Router) {}
 
   ngOnInit() {
-    this.folderService
-      .getFolderCollections()
-      .then((data) => (this.folders = data));
+    // this.folderService
+    //   .getFolderCollections()
+    //   .then((data) => (this.folders = data));
+
+    this.folderService.getFirebaseData().subscribe((data) => {
+      this.folders = data;
+    });
 
     this.optionMenus = [
       {
@@ -100,33 +105,41 @@ export class FolderStructureComponent implements OnInit {
   }
 
   deleteFolder(folderToDelete: TreeNode) {
-    this.folders.forEach((fold, index) => {
-      fold.label.toLowerCase() === folderToDelete.label.toLowerCase()
-        ? this.folders.splice(index, 1)
-        : this.nodeRecursiveAction(fold, folderToDelete, "delete");
-    });
+    // this.folders.forEach((fold, index) => {
+    //   fold.label.toLowerCase() === folderToDelete.label.toLowerCase()
+    //     ? this.folders.splice(index, 1)
+    //     : this.nodeRecursiveAction(fold, folderToDelete, "delete");
+    // });
+    this.nodeRecursiveAction(this.folders[0], folderToDelete, "delete");
   }
 
   // Dialog Success button actions
   onSuccessBtnClick() {
     if (this.footerSuccessBtn.toLowerCase() === "rename") {
       let renameString = this.folderNameInput;
-      this.folders.forEach((fold, index) => {
-        fold.label.toLowerCase() === this.selectedFolder.label.toLowerCase()
-          ? (this.folders[index].label = renameString)
-          : this.nodeRecursiveAction(
-              fold,
-              this.selectedFolder,
-              "rename",
-              renameString
-            );
-      });
+      // this.folders.forEach((fold, index) => {
+      //   fold.label.toLowerCase() === this.selectedFolder.label.toLowerCase()
+      //     ? (this.folders[index].label = renameString)
+      //     : this.nodeRecursiveAction(
+      //         fold,
+      //         this.selectedFolder,
+      //         "rename",
+      //         renameString
+      //       );
+      // });
+      this.nodeRecursiveAction(
+        this.folders[0],
+        this.selectedFolder,
+        "rename",
+        renameString
+      );
     } else if (this.footerSuccessBtn.toLowerCase() === "add") {
       let newFolderNode = {
         label: this.folderNameInput,
         data: this.folderNameInput,
         expandedIcon: "pi pi-folder-open",
         collapsedIcon: "pi pi-folder",
+        key: uuidv4(),
       };
       this.folders.forEach((fold, index) => {
         if (
@@ -145,6 +158,7 @@ export class FolderStructureComponent implements OnInit {
         }
       });
     }
+    this.folderService.setFirebaseData(this.folders);
     this.folderActionDialog = false;
   }
 
@@ -152,4 +166,9 @@ export class FolderStructureComponent implements OnInit {
   onCancelBtnClick() {
     this.folderActionDialog = false;
   }
+
+  // onFolderClick(event) {
+  //   console.log(event);
+  //   this.router.navigate(["/bookmarks", JSON.stringify(event.node)]);
+  // }
 }

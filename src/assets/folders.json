@@ -1,81 +1,108 @@
 {
   "data": [
     {
-      "label": "My Collections",
-      "data": "My Collections",
+      "label": "My Bookmarks",
+      "data": "My Bookmarks",
       "expandedIcon": "pi pi-folder-open",
       "collapsedIcon": "pi pi-folder",
+      "feature": "folder",
       "children": [
         {
-          "label": "Dev Links",
-          "data": "Dev Links",
+          "label": "Startup Links",
+          "data": "Startup Links",
           "expandedIcon": "pi pi-folder-open",
           "collapsedIcon": "pi pi-folder",
+          "feature": "folder",
           "children": [
             {
-              "label": "Office Dev",
-              "data": "Office Dev",
+              "label": "Dev Resources",
+              "data": "Dev Resources",
               "expandedIcon": "pi pi-folder-open",
-              "collapsedIcon": "pi pi-folder"
+              "collapsedIcon": "pi pi-folder",
+              "feature": "folder",
+              "children": [
+                {
+                  "label": "Office Dev",
+                  "data": "Office Dev",
+                  "expandedIcon": "pi pi-folder-open",
+                  "collapsedIcon": "pi pi-folder",
+                  "feature": "folder"
+                },
+                {
+                  "label": "Personal Project Dev",
+                  "data": "Personal Project Dev",
+                  "expandedIcon": "pi pi-folder-open",
+                  "collapsedIcon": "pi pi-folder",
+                  "feature": "folder"
+                }
+              ]
             },
             {
-              "label": "Personal Dev",
-              "data": "Personal Dev",
+              "label": "Design Resources",
+              "data": "Design Resources",
               "expandedIcon": "pi pi-folder-open",
-              "collapsedIcon": "pi pi-folder"
+              "collapsedIcon": "pi pi-folder",
+              "feature": "folder",
+              "children": [
+                {
+                  "label": "Pinterest Links",
+                  "data": "Pinterest Links",
+                  "expandedIcon": "pi pi-folder-open",
+                  "collapsedIcon": "pi pi-folder",
+                  "feature": "folder"
+                },
+                {
+                  "label": "Dribble Links",
+                  "data": "Dribble Links",
+                  "expandedIcon": "pi pi-folder-open",
+                  "collapsedIcon": "pi pi-folder",
+                  "feature": "folder"
+                },
+                {
+                  "label": "Codepen Links",
+                  "data": "Codepen Links",
+                  "expandedIcon": "pi pi-folder-open",
+                  "collapsedIcon": "pi pi-folder",
+                  "feature": "folder"
+                }
+              ]
             }
           ]
         },
         {
-          "label": "Design Resources",
-          "data": "Design Resources",
+          "label": "Angular Links",
+          "data": "Angular Links",
           "expandedIcon": "pi pi-folder-open",
           "collapsedIcon": "pi pi-folder",
           "children": [
             {
-              "label": "Pinterest Links",
-              "data": "Pinterest Links",
-              "expandedIcon": "pi pi-folder-open",
-              "collapsedIcon": "pi pi-folder"
+              "label": "angular.io",
+              "icon": "pi pi-globe",
+              "data": "Angular Docs page",
+              "feature": "URLlink"
             },
             {
-              "label": "Dribble Links",
-              "data": "Dribble Links",
-              "expandedIcon": "pi pi-folder-open",
-              "collapsedIcon": "pi pi-folder"
+              "label": "primeNg",
+              "icon": "pi pi-globe",
+              "data": "PrimeFaces Website",
+              "feature": "URLlink"
+            },
+            {
+              "label": "RxJS",
+              "icon": "pi pi-globe",
+              "data": "RxJS Website",
+              "feature": "URLlink"
             }
           ]
-        }
-      ]
-    },
-    {
-      "label": "Pictures",
-      "data": "Pictures Folder",
-      "expandedIcon": "pi pi-folder-open",
-      "collapsedIcon": "pi pi-folder",
-      "children": [
-        {
-          "label": "barcelona.jpg",
-          "icon": "pi pi-image",
-          "data": "Barcelona Photo"
         },
         {
-          "label": "logo.jpg",
-          "icon": "pi pi-image",
-          "data": "PrimeFaces Logo"
-        },
-        {
-          "label": "primeui.png",
-          "icon": "pi pi-image",
-          "data": "PrimeUI Logo"
+          "label": "Links to learn later",
+          "data": "Learning",
+          "expandedIcon": "pi pi-folder-open",
+          "collapsedIcon": "pi pi-folder",
+          "feature": "folder"
         }
       ]
-    },
-    {
-      "label": "Movies",
-      "data": "Movies Folder",
-      "expandedIcon": "pi pi-folder-open",
-      "collapsedIcon": "pi pi-folder"
     }
   ]
 }

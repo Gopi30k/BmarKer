@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddBookmarkComponent } from './add-bookmark.component';
+import { ViewBmarksPaneComponent } from './view-bmarks-pane.component';
 
-describe('AddBookmarkComponent', () => {
-  let component: AddBookmarkComponent;
-  let fixture: ComponentFixture<AddBookmarkComponent>;
+describe('ViewBmarksPaneComponent', () => {
+  let component: ViewBmarksPaneComponent;
+  let fixture: ComponentFixture<ViewBmarksPaneComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddBookmarkComponent ]
+      declarations: [ ViewBmarksPaneComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddBookmarkComponent);
+    fixture = TestBed.createComponent(ViewBmarksPaneComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

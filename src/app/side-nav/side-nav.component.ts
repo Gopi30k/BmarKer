@@ -1,16 +1,15 @@
 import { Component, OnInit } from "@angular/core";
 import { DialogService } from "primeng/dynamicdialog";
 import { DynamicDialogRef } from "primeng/dynamicdialog";
-import { AddURLComponent } from "../add-url/add-url.component";
 import { MessageService } from "primeng/api";
 
 @Component({
-  selector: "app-left-pane",
-  templateUrl: "./left-pane.component.html",
-  styleUrls: ["./left-pane.component.css"],
+  selector: "app-side-nav",
+  templateUrl: "./side-nav.component.html",
+  styleUrls: ["./side-nav.component.css"],
   providers: [DialogService, MessageService],
 })
-export class LeftPaneComponent implements OnInit {
+export class SideNavComponent implements OnInit {
   displayURLDialog: boolean = false;
   bmarkerURL: string;
   ref: DynamicDialogRef;
@@ -26,7 +25,11 @@ export class LeftPaneComponent implements OnInit {
   }
 
   addURL() {
-    if (this.bmarkerURL !== undefined) {
+    if (
+      this.bmarkerURL !== undefined &&
+      this.bmarkerURL &&
+      this.bmarkerURL != ""
+    ) {
       this.messageService.add({
         key: "tc",
         severity: "success",
@@ -50,16 +53,4 @@ export class LeftPaneComponent implements OnInit {
   cancelURL() {
     this.displayURLDialog = false;
   }
-  // addBookmark() {
-  //   // this.displayURLDialog = true;
-  //   this.ref = this.dialogService.open(AddURLComponent, {
-  //     header: "Add Bookmark",
-  //     width: "70%",
-  //     contentStyle: {
-  //       height: "350px",
-  //       display: "flex",
-  //       "justify-content": "center",
-  //     },
-  //   });
-  // }
 }
