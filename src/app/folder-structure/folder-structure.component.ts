@@ -3,6 +3,7 @@ import { MenuItem, TreeNode, TreeDragDropService } from "primeng/api";
 import { FolderService } from "../folder.service";
 import { Router } from "@angular/router";
 import { v4 as uuidv4 } from "uuid";
+import { Folder } from "../models";
 @Component({
   selector: "app-folder-structure",
   templateUrl: "./folder-structure.component.html",
@@ -10,7 +11,7 @@ import { v4 as uuidv4 } from "uuid";
   providers: [TreeDragDropService],
 })
 export class FolderStructureComponent implements OnInit {
-  folders: TreeNode[];
+  folders: Folder[];
   optionMenus: MenuItem[];
   selectedFolder: TreeNode;
   dialogTitle: string = "";
@@ -21,12 +22,8 @@ export class FolderStructureComponent implements OnInit {
   constructor(private folderService: FolderService, private router: Router) {}
 
   ngOnInit() {
-    // this.folderService
-    //   .getFolderCollections()
-    //   .then((data) => (this.folders = data));
-
-    this.folderService.getFirebaseData().subscribe((data) => {
-      this.folders = data;
+    this.folderService.getFolderCollections().then((api_data) => {
+      this.folders = this.getFolderData(api_data);
     });
 
     this.optionMenus = [
@@ -46,6 +43,25 @@ export class FolderStructureComponent implements OnInit {
         command: (event) => this.deleteFolder(this.selectedFolder),
       },
     ];
+  }
+
+  /**
+   * Recursive method to filter out folder only records
+   * @param treeData - API Data of type @interface Folder[]
+   * @returns @interface Folder[]
+   */
+  getFolderData(treeData: Folder[]): Folder[] {
+    const foldersOnly = treeData.filter(
+      (folder) => folder.feature.toLowerCase() === "folder"
+    );
+
+    foldersOnly.forEach((folder) => {
+      if (folder.children) {
+        folder.children = this.getFolderData(folder.children);
+      }
+    });
+
+    return foldersOnly;
   }
 
   /**
@@ -140,6 +156,7 @@ export class FolderStructureComponent implements OnInit {
         expandedIcon: "pi pi-folder-open",
         collapsedIcon: "pi pi-folder",
         key: uuidv4(),
+        feature: "folder",
       };
       this.folders.forEach((fold, index) => {
         if (
@@ -158,7 +175,7 @@ export class FolderStructureComponent implements OnInit {
         }
       });
     }
-    this.folderService.setFirebaseData(this.folders);
+    // this.folderService.setFirebaseData(this.folders);
     this.folderActionDialog = false;
   }
 
@@ -167,8 +184,8 @@ export class FolderStructureComponent implements OnInit {
     this.folderActionDialog = false;
   }
 
-  // onFolderClick(event) {
-  //   console.log(event);
-  //   this.router.navigate(["/bookmarks", JSON.stringify(event.node)]);
-  // }
+  onFolderClick(event) {
+    console.log(event.node.key);
+    this.router.navigate(["/bookmarks", event.node.key]);
+  }
 }

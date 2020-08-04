@@ -1,11 +1,6 @@
-export interface Folder {
-  label: string;
-  data: string;
-  expandedIcon: string;
-  collapsedIcon: string;
-  children?: Folder[];
-}
+import { TreeNode } from "primeng/api";
 
-export interface folderData {
-  data: Folder[];
+export interface Folder extends TreeNode {
+  feature: string;
+  children?: Folder[];
 }
