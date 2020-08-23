@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { MenuItem, TreeNode, TreeDragDropService } from "primeng/api";
+import { MenuItem, TreeDragDropService } from "primeng/api";
 import { FolderService } from "../folder.service";
 import { Router } from "@angular/router";
 import { v4 as uuidv4 } from "uuid";
@@ -13,7 +13,7 @@ import { Folder } from "../models";
 export class FolderStructureComponent implements OnInit {
   folders: Folder[];
   optionMenus: MenuItem[];
-  selectedFolder: TreeNode;
+  selectedFolder: Folder;
   dialogTitle: string = "";
   folderNameInput: string = "";
   footerSuccessBtn: string = "";
@@ -22,9 +22,14 @@ export class FolderStructureComponent implements OnInit {
   constructor(private folderService: FolderService, private router: Router) {}
 
   ngOnInit() {
-    this.folderService.getFolderCollections().then((api_data) => {
-      this.folders = this.getFolderData(api_data);
-    });
+    // this.folderService.getFolderCollectionsJSON().then((api_data) => {
+    //   this.folders = this.getFolderData(api_data);      // console.log(api_data);
+    // });
+
+    this.folderService
+      .getFolderCollections()
+      // .subscribe((api_data) => (this.folders = this.getFolderData(api_data)));
+      .subscribe((api_data) => (this.folders = api_data));
 
     this.optionMenus = [
       {
@@ -72,10 +77,10 @@ export class FolderStructureComponent implements OnInit {
    * @param actionString value to be added as part of task performed
    */
   nodeRecursiveAction(
-    folderNode: TreeNode,
-    folderToFind: TreeNode,
+    folderNode: Folder,
+    folderToFind: Folder,
     action: string,
-    actionString?: TreeNode | string
+    actionString?: Folder | string
   ) {
     // if no children return label of leaf Folder Node
     if (folderNode.children === undefined) {
@@ -92,10 +97,8 @@ export class FolderStructureComponent implements OnInit {
             folderNode.children[index].label = <string>actionString;
           } else if (action === "add") {
             folderNode.children[index].children !== undefined
-              ? folderNode.children[index].children.push(<TreeNode>actionString)
-              : (folderNode.children[index].children = [
-                  <TreeNode>actionString,
-                ]);
+              ? folderNode.children[index].children.push(<Folder>actionString)
+              : (folderNode.children[index].children = [<Folder>actionString]);
           }
         } else {
           // Recursive call
@@ -106,27 +109,30 @@ export class FolderStructureComponent implements OnInit {
   }
 
   // context Menu Actions
-  newFolderDialog(file: TreeNode) {
+  newFolderDialog(file: Folder) {
     this.dialogTitle = "Add Folder";
     this.footerSuccessBtn = "Add";
     this.folderActionDialog = true;
     this.folderNameInput = "";
   }
 
-  renameFolder(folderToRename: TreeNode) {
+  renameFolder(folderToRename: Folder) {
     this.dialogTitle = "Rename Folder";
     this.footerSuccessBtn = "Rename";
     this.folderActionDialog = true;
     this.folderNameInput = folderToRename.label;
   }
 
-  deleteFolder(folderToDelete: TreeNode) {
+  deleteFolder(folderToDelete: Folder) {
     // this.folders.forEach((fold, index) => {
     //   fold.label.toLowerCase() === folderToDelete.label.toLowerCase()
     //     ? this.folders.splice(index, 1)
     //     : this.nodeRecursiveAction(fold, folderToDelete, "delete");
     // });
     this.nodeRecursiveAction(this.folders[0], folderToDelete, "delete");
+    console.log(folderToDelete);
+
+    this.folderService.deleteFolder(folderToDelete);
   }
 
   // Dialog Success button actions
@@ -143,6 +149,7 @@ export class FolderStructureComponent implements OnInit {
       //         renameString
       //       );
       // });
+      this.folderService.renameNewFolder(this.selectedFolder, renameString);
       this.nodeRecursiveAction(
         this.folders[0],
         this.selectedFolder,
@@ -151,12 +158,15 @@ export class FolderStructureComponent implements OnInit {
       );
     } else if (this.footerSuccessBtn.toLowerCase() === "add") {
       let newFolderNode = {
+        key: uuidv4(),
         label: this.folderNameInput,
         data: this.folderNameInput,
         expandedIcon: "pi pi-folder-open",
         collapsedIcon: "pi pi-folder",
-        key: uuidv4(),
         feature: "folder",
+        children: [],
+        parent: this.selectedFolder.label,
+        leaf: true,
       };
       this.folders.forEach((fold, index) => {
         if (
@@ -174,6 +184,8 @@ export class FolderStructureComponent implements OnInit {
           );
         }
       });
+
+      this.folderService.addNewFolder(newFolderNode);
     }
     // this.folderService.setFirebaseData(this.folders);
     this.folderActionDialog = false;
@@ -185,7 +197,7 @@ export class FolderStructureComponent implements OnInit {
   }
 
   onFolderClick(event) {
-    console.log(event.node.key);
-    this.router.navigate(["/bookmarks", event.node.key]);
+    console.log(event.node);
+    // this.router.navigate(["/bookmarks", event.node.key]);
   }
 }
