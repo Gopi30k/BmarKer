@@ -1,0 +1,144 @@
+[{
+  "_id": {
+    "$oid": "5f32cf69170ad25eda8003ea"
+  },
+  "key": "5e9a7e56-858b-4cc8-be8b-14ad6d1801a8",
+  "label": "My Bookmarks",
+  "data": "My Bookmarks",
+  "expandedIcon": "pi pi-folder-open",
+  "collapsedIcon": "pi pi-folder",
+  "feature": "folder",
+  "children": [
+    "Startup Links",
+    "Angular Links",
+    "Links to learn later"
+  ],
+  "parent":"null",
+  "leaf": false
+},{
+  "_id": {
+    "$oid": "5f32cf69170ad25eda8003eb"
+  },
+  "key": "79df8090-ff10-4857-9576-4b3402166834",
+  "label": "Startup Links",
+  "data": "Startup Links",
+  "expandedIcon": "pi pi-folder-open",
+  "collapsedIcon": "pi pi-folder",
+  "feature": "folder",
+  "children": [
+    "Dev Resources",
+    "Design Resources"
+  ],
+  "parent":"My Bookmarks",
+  "leaf": false
+},{
+  "_id": {
+    "$oid": "5f32cf69170ad25eda8003ec"
+  },
+  "key": "7d3b7021-6eb2-4d45-980e-156b6b38a8f7",
+  "label": "Dev Resources",
+  "data": "Dev Resources",
+  "expandedIcon": "pi pi-folder-open",
+  "collapsedIcon": "pi pi-folder",
+  "feature": "folder",
+  "children": [
+    "Office Dev"
+  ],
+  "parent":"Dev Resources",
+  "leaf": false
+},{
+  "_id": {
+    "$oid": "5f32cf69170ad25eda8003ed"
+  },
+  "key": "fb161667-2d29-432a-a8fa-208d1b8898c1",
+  "label": "Design Resources",
+  "data": "Design Resources",
+  "expandedIcon": "pi pi-folder-open",
+  "collapsedIcon": "pi pi-folder",
+  "feature": "folder",
+  "children": [
+    "Pinterest Links",
+    "Dribble Links",
+    "Codepen Links"
+  ],
+  "parent": "Startup Links",
+  "leaf": false
+},{
+  "_id": {
+    "$oid": "5f32cf69170ad25eda8003ee"
+  },
+  "key": "aa893502-9b36-45da-a7e2-e49af2d656cc",
+  "label": "Angular Links",
+  "data": "Angular Links",
+  "feature": "folder",
+  "expandedIcon": "pi pi-folder-open",
+  "collapsedIcon": "pi pi-folder",
+  "children": [],
+  "parent":"My Bookmarks",
+  "leaf": true
+},{
+  "_id": {
+    "$oid": "5f32cf69170ad25eda8003ef"
+  },
+  "key": "5fceedad-bab7-4206-92a4-66cb82deff61",
+  "label": "Links to learn later",
+  "data": "Learning",
+  "expandedIcon": "pi pi-folder-open",
+  "collapsedIcon": "pi pi-folder",
+  "feature": "folder",
+  "children": [],
+  "parent":"My Bookmarks",
+  "leaf": true
+},{
+  "_id": {
+    "$oid": "5f32cf69170ad25eda8003f0"
+  },
+  "key": "add012d7-a44e-4bf9-ab45-c563bb06b6fe",
+  "label": "Office Dev",
+  "data": "Office Dev",
+  "expandedIcon": "pi pi-folder-open",
+  "collapsedIcon": "pi pi-folder",
+  "feature": "folder",
+  "children": [],
+  "parent": "Dev Resources",
+  "leaf": true
+},{
+  "_id": {
+    "$oid": "5f32cf69170ad25eda8003f2"
+  },
+  "key": "875b1283-df50-4c80-84eb-5e47709565bd",
+  "label": "Pinterest Links",
+  "data": "Pinterest Links",
+  "expandedIcon": "pi pi-folder-open",
+  "collapsedIcon": "pi pi-folder",
+  "feature": "folder",
+  "children": [],
+  "parent": "Design Resources",
+  "leaf": true
+},{
+  "_id": {
+    "$oid": "5f32cf69170ad25eda8003f3"
+  },
+  "key": "03a057e1-01bd-4020-abbe-54f3373ff707",
+  "label": "Dribble Links",
+  "data": "Dribble Links",
+  "expandedIcon": "pi pi-folder-open",
+  "collapsedIcon": "pi pi-folder",
+  "feature": "folder",
+  "children": [],
+  "parent": "Design Resources",
+  "leaf": true
+},{
+  "_id": {
+    "$oid": "5f32cf69170ad25eda8003f4"
+  },
+  "key": "35f08615-0a4b-4015-8dbd-16326c13559d",
+  "label": "Codepen Links",
+  "data": "Codepen Links",
+  "expandedIcon": "pi pi-folder-open",
+  "collapsedIcon": "pi pi-folder",
+  "feature": "folder",
+  "children": [],
+  "parent": "Design Resources",
+  "leaf": true
+}]

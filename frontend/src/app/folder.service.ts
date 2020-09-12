@@ -32,63 +32,39 @@ export class FolderService {
     // this.bmarkerDoc = afs.collection<TreeNode>("bookmarks");
   }
 
-  getFolderCollectionsJSON() {
-    return this.http
-      .get<TreeNode>("assets/folders.json")
-      .toPromise()
-      .then((res) => res.data);
-  }
-
   getFolderCollections() {
     return this.http
       .get<Folder[]>("http://127.0.0.1:5000/")
       .pipe(map((data) => data["data"]));
   }
 
+  getFolderDependants(key: string) {
+    return this.http.post<any>("http://127.0.0.1:5000/", { bookmark: key });
+    // .subscribe((data) => console.log(data));
+  }
+
   addNewFolder(newFolder: Folder) {
     console.log(newFolder);
+
     return this.http
       .post<Folder>("http://127.0.0.1:5000/addFolder", { folder: newFolder })
       .subscribe((data) => console.log(data));
   }
 
-  renameNewFolder(folderToRename: Folder, renameString: string) {
-    folderToRename["parent"] = folderToRename["parent"]["label"];
-    console.log(folderToRename, renameString);
+  renameNewFolder(folderToRenameKey: string, renameFolder: Folder) {
     return this.http
       .post<Folder>("http://127.0.0.1:5000/renameFolder", {
-        folder: folderToRename,
-        renameString: renameString,
+        key: folderToRenameKey,
+        renameFolder: renameFolder,
       })
       .subscribe((data) => console.log(data));
   }
 
-  deleteFolder(folderToDel: Folder) {
-    folderToDel["parent"] = folderToDel["parent"]["label"];
-    console.log(folderToDel);
-
+  deleteFolder(folderToDelKey: string) {
     return this.http
       .post<Folder>("http://127.0.0.1:5000/deleteFolder", {
-        folder: folderToDel,
+        key: folderToDelKey,
       })
       .subscribe((data) => console.log(data));
   }
-  // getFirebaseData() {
-  //   return this.bmarkerRef
-  //     .valueChanges()
-  //     .pipe(tap((data) => console.log(data)));
-  // }
-
-  // getFirebaseData() {
-  //   this.bmarkerDoc.get().subscribe((d) => console.log(d));
-
-  //   return this.bmarkerDoc
-  //   .valueChanges()
-  //   .pipe(tap((data) => console.log(data)));
-
-  // }
-
-  // setFirebaseData(bmarks: TreeNode[]) {
-  //   this.bmarkerRef.set("bookmarks", { test: "hey" });
-  // }
 }

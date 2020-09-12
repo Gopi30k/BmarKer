@@ -1,0 +1,38 @@
+---------------------------------------------------------------------------
+// Get All node Tree JSON	
+---------------------------------------------------------------------------
+db.system.js.save(
+ {
+     _id: "getTree",
+     value : function(node) {
+			var i = 0;
+			print(node.label ,node.children.length)
+			while(i <= node.children.length){
+			if(node.label === 'Angular Links')
+			{
+			print(node)
+			}
+			
+					var childNode = db.bookmarks.findOne({label:node.children[i]},{_id:0})
+					
+					if (childNode.leaf === true){
+						node.children[i] = childNode;
+						}
+					else{
+						node.children[i] = getTree(db.bookmarks.findOne({label:node.children[i]},{_id:0}));
+						}
+					
+					i++;
+				}
+			return node;
+								}
+ }
+);
+
+
+db.loadServerScripts();
+
+
+getTree(db.bookmarks.findOne({label:'My Bookmarks'},{_id:0}))
+
+---------------------------------------------------------------------------

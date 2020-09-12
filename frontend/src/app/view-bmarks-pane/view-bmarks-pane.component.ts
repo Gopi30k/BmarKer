@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { TreeNode } from "primeng/api";
+import { FolderService } from "../folder.service";
 
 @Component({
   selector: "app-view-bmarks-pane",
@@ -8,13 +9,17 @@ import { TreeNode } from "primeng/api";
   styleUrls: ["./view-bmarks-pane.component.css"],
 })
 export class ViewBmarksPaneComponent implements OnInit {
-  folderName: string;
-  constructor(private route: ActivatedRoute) {}
+  bmarks: any;
+  constructor(
+    private route: ActivatedRoute,
+    private folderService: FolderService
+  ) {}
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
-      console.log(params);
-      this.folderName = params.get("folder");
+      this.folderService
+        .getFolderDependants(params.get("folder"))
+        .subscribe((data) => (this.bmarks = data));
     });
   }
 }

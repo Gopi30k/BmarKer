@@ -22,14 +22,10 @@ export class FolderStructureComponent implements OnInit {
   constructor(private folderService: FolderService, private router: Router) {}
 
   ngOnInit() {
-    // this.folderService.getFolderCollectionsJSON().then((api_data) => {
-    //   this.folders = this.getFolderData(api_data);      // console.log(api_data);
-    // });
-
     this.folderService
       .getFolderCollections()
-      // .subscribe((api_data) => (this.folders = this.getFolderData(api_data)));
-      .subscribe((api_data) => (this.folders = api_data));
+      .subscribe((api_data) => (this.folders = this.getFolderData(api_data)));
+    // .subscribe((api_data) => (this.folders = api_data));
 
     this.optionMenus = [
       {
@@ -124,32 +120,27 @@ export class FolderStructureComponent implements OnInit {
   }
 
   deleteFolder(folderToDelete: Folder) {
-    // this.folders.forEach((fold, index) => {
-    //   fold.label.toLowerCase() === folderToDelete.label.toLowerCase()
-    //     ? this.folders.splice(index, 1)
-    //     : this.nodeRecursiveAction(fold, folderToDelete, "delete");
-    // });
     this.nodeRecursiveAction(this.folders[0], folderToDelete, "delete");
-    console.log(folderToDelete);
 
-    this.folderService.deleteFolder(folderToDelete);
+    this.folderService.deleteFolder(folderToDelete.key);
   }
 
   // Dialog Success button actions
   onSuccessBtnClick() {
     if (this.footerSuccessBtn.toLowerCase() === "rename") {
       let renameString = this.folderNameInput;
-      // this.folders.forEach((fold, index) => {
-      //   fold.label.toLowerCase() === this.selectedFolder.label.toLowerCase()
-      //     ? (this.folders[index].label = renameString)
-      //     : this.nodeRecursiveAction(
-      //         fold,
-      //         this.selectedFolder,
-      //         "rename",
-      //         renameString
-      //       );
-      // });
-      this.folderService.renameNewFolder(this.selectedFolder, renameString);
+      let renameFolder = {
+        label: this.folderNameInput,
+        data: this.folderNameInput,
+        expandedIcon: "pi pi-folder-open",
+        collapsedIcon: "pi pi-folder",
+        feature: "folder",
+        children: [],
+        parent: this.selectedFolder.key,
+        leaf: true,
+      };
+
+      this.folderService.renameNewFolder(this.selectedFolder.key, renameFolder);
       this.nodeRecursiveAction(
         this.folders[0],
         this.selectedFolder,
@@ -165,7 +156,7 @@ export class FolderStructureComponent implements OnInit {
         collapsedIcon: "pi pi-folder",
         feature: "folder",
         children: [],
-        parent: this.selectedFolder.label,
+        parent: this.selectedFolder.key,
         leaf: true,
       };
       this.folders.forEach((fold, index) => {
@@ -187,7 +178,6 @@ export class FolderStructureComponent implements OnInit {
 
       this.folderService.addNewFolder(newFolderNode);
     }
-    // this.folderService.setFirebaseData(this.folders);
     this.folderActionDialog = false;
   }
 
@@ -197,7 +187,8 @@ export class FolderStructureComponent implements OnInit {
   }
 
   onFolderClick(event) {
-    console.log(event.node);
-    // this.router.navigate(["/bookmarks", event.node.key]);
+    // console.log(event.node);
+    this.router.navigate(["/bookmarks", event.node.key]);
+    // this.folderService.getFolderDependants(event.node.key);
   }
 }
