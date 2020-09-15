@@ -7,7 +7,7 @@ import { Folder } from "../models";
 @Component({
   selector: "app-folder-structure",
   templateUrl: "./folder-structure.component.html",
-  styleUrls: ["./folder-structure.component.css"],
+  styleUrls: ["./folder-structure.component.scss"],
   providers: [TreeDragDropService],
 })
 export class FolderStructureComponent implements OnInit {

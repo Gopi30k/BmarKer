@@ -6,7 +6,7 @@ import { FolderService } from "../folder.service";
 @Component({
   selector: "app-view-bmarks-pane",
   templateUrl: "./view-bmarks-pane.component.html",
-  styleUrls: ["./view-bmarks-pane.component.css"],
+  styleUrls: ["./view-bmarks-pane.component.scss"],
 })
 export class ViewBmarksPaneComponent implements OnInit {
   bmarks: any;

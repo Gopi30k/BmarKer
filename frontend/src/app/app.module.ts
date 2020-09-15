@@ -3,7 +3,8 @@ import { NgModule } from "@angular/core";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
-import { PrimengModule } from "./primeng/primeng.module";
+import { PrimengModule } from "./StyleLibraries/primeng/primeng.module";
+import { MaterialModule } from "./StyleLibraries/material/angular.material.module";
 import { HttpClientModule } from "@angular/common/http";
 import { FormsModule } from "@angular/forms";
 import { FolderStructureComponent } from "./folder-structure/folder-structure.component";
@@ -12,8 +13,9 @@ import { SideNavComponent } from "./side-nav/side-nav.component";
 import { AngularFireModule } from "@angular/fire";
 import { environment } from "../environments/environment";
 import { AngularFirestoreModule } from "@angular/fire/firestore";
-
 import { AngularFireDatabaseModule } from "@angular/fire/database";
+import { NavBarComponent } from "./nav-bar/nav-bar.component";
+import { AngularFontAwesomeModule } from "angular-font-awesome";
 
 @NgModule({
   declarations: [
@@ -21,17 +23,20 @@ import { AngularFireDatabaseModule } from "@angular/fire/database";
     FolderStructureComponent,
     ViewBmarksPaneComponent,
     SideNavComponent,
+    NavBarComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     PrimengModule,
+    MaterialModule,
     HttpClientModule,
     FormsModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
     AngularFireDatabaseModule,
+    AngularFontAwesomeModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

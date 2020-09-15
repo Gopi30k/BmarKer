@@ -36,13 +36,15 @@
   </p-footer>
 </p-dialog>
 
-<button
-  pButton
-  type="button"
-  class="ui-button-raised ui-button-rounded"
-  label="Bookmark"
-  icon="pi pi-bookmark"
-  (click)="addBookmark()"
-></button>
-<p-toast position="top-center" key="tc"></p-toast>
-<app-folder-structure></app-folder-structure>
+<div class="side-nav">
+  <button
+    pButton
+    type="button"
+    class="ui-button-raised ui-button-rounded"
+    label="Bookmark"
+    icon="pi pi-bookmark"
+    (click)="addBookmark()"
+  ></button>
+  <p-toast position="top-center" key="tc"></p-toast>
+  <app-folder-structure></app-folder-structure>
+</div>

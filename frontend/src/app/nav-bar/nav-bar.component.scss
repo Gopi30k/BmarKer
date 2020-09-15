@@ -1,0 +1,23 @@
+.nav-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2),
+    0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
+  z-index: 1002;
+  .search-bookmarks {
+  }
+
+  #account-icon {
+    border: 1px solid #3498db;
+    border-radius: 50%;
+    padding: 5px;
+    color: #3498db;
+  }
+}
