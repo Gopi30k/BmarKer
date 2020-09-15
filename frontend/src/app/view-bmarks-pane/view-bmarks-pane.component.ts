@@ -16,6 +16,7 @@ export class ViewBmarksPaneComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    console.log("asda");
     this.route.paramMap.subscribe((params) => {
       this.folderService
         .getFolderDependants(params.get("folder"))

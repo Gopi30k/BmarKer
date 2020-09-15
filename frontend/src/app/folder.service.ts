@@ -39,8 +39,10 @@ export class FolderService {
   }
 
   getFolderDependants(key: string) {
-    return this.http.post<any>("http://127.0.0.1:5000/", { bookmark: key });
-    // .subscribe((data) => console.log(data));
+    if (key !== null) {
+      return this.http.post<any>("http://127.0.0.1:5000/", { bookmark: key });
+      // .subscribe((data) => console.log(data));
+    }
   }
 
   addNewFolder(newFolder: Folder) {

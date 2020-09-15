@@ -16,6 +16,7 @@ import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { AngularFireDatabaseModule } from "@angular/fire/database";
 import { NavBarComponent } from "./nav-bar/nav-bar.component";
 import { AngularFontAwesomeModule } from "angular-font-awesome";
+import { BmarkerComponent } from './bmarker/bmarker.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { AngularFontAwesomeModule } from "angular-font-awesome";
     ViewBmarksPaneComponent,
     SideNavComponent,
     NavBarComponent,
+    BmarkerComponent,
   ],
   imports: [
     BrowserModule,
