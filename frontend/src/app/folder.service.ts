@@ -3,16 +3,6 @@ import { HttpClient } from "@angular/common/http";
 import { TreeNode } from "primeng/api";
 import { Folder } from "./models";
 import { tap, map, filter } from "rxjs/operators";
-import {
-  AngularFireDatabase,
-  AngularFireObject,
-  AngularFireList,
-} from "@angular/fire/database";
-import {
-  AngularFirestore,
-  AngularFirestoreDocument,
-  AngularFirestoreCollection,
-} from "@angular/fire/firestore";
 import { Observable } from "rxjs";
 import { Tree } from "primeng/tree";
 
@@ -22,12 +12,7 @@ import { Tree } from "primeng/tree";
 export class FolderService {
   // bmarkerRef: AngularFireList<any>;
   // bmarkerDoc: AngularFirestoreCollection<TreeNode>;
-  bmarkerDoc: AngularFirestoreCollection<TreeNode>;
-  constructor(
-    private http: HttpClient,
-    private db: AngularFireDatabase,
-    private afs: AngularFirestore
-  ) {
+  constructor(private http: HttpClient) {
     // this.bmarkerRef = db.list("bookmarks");
     // this.bmarkerDoc = afs.collection<TreeNode>("bookmarks");
   }
@@ -51,6 +36,16 @@ export class FolderService {
     return this.http
       .post<Folder>("http://127.0.0.1:5000/addFolder", { folder: newFolder })
       .subscribe((data) => console.log(data));
+  }
+
+  addNewURL(urlLink) {
+    // console.log(urlLink);
+
+    return this.http
+      .post<any>("http://127.0.0.1:5000/addURL", {
+        url_link: urlLink,
+      })
+      .subscribe((d) => console.log(d));
   }
 
   renameNewFolder(folderToRenameKey: string, renameFolder: Folder) {

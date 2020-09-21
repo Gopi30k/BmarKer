@@ -3,10 +3,13 @@ from flask_cors import CORS, cross_origin
 from flask import jsonify
 from flask import request
 from flask_pymongo import PyMongo
+import requests
+import favicon
+from bs4 import BeautifulSoup as bs
+
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
-
 app.config['DB_NAME'] = 'projects'
 app.config['MONGO_URI'] = 'mongodb://localhost:27017/projects'
 
@@ -37,7 +40,7 @@ def getBookmarkTree():
     if request.method == 'POST':
         bookmarkTree = mongo.db.bookmarks.find_one_or_404(
             {"key": request.json['bookmark']}, {"_id": 0})
-    else:
+    if request.method == 'GET':
         bookmarkTree = mongo.db.bookmarks.find_one_or_404(
             {"key": "5e9a7e56-858b-4cc8-be8b-14ad6d1801a8"}, {"_id": 0})
     recursiveNodeIter(bookmarkTree, 'fetch')
@@ -52,6 +55,20 @@ def newFolder():
     parentDoc['leaf'] = False
     mongo.db.bookmarks.update_one(
         {'key': parentDoc['key']}, {"$set": parentDoc})
+    mongo.db.bookmarks.insert_one(newDoc)
+    return jsonify(success="ok"), 200
+
+
+@app.route('/addURL', methods=['POST'])
+def newURLLink():
+    newDoc = request.json['url_link']
+    parentDoc = mongo.db.bookmarks.find_one_or_404({"key": newDoc['parent']})
+    parentDoc['children'].append(newDoc['key'])
+    parentDoc['leaf'] = False
+    mongo.db.bookmarks.update_one(
+        {'key': parentDoc['key']}, {"$set": parentDoc})
+    newDoc = linkObjUpdate(newDoc)
+    print(newDoc)
     mongo.db.bookmarks.insert_one(newDoc)
     return jsonify(success="ok"), 200
 
@@ -91,6 +108,36 @@ def deleteFolder():
     # Delete the Current Node
     mongo.db.bookmarks.delete_one({'key': delDoc['key']})
     return jsonify(success="deleted"), 200
+
+
+def linkObjUpdate(URLObj):
+    # breakpoint()
+    webPageTitle = getPageTitle(URLObj['data'])
+    # print(webPageTitle)
+    if webPageTitle['valid']:
+        URLObj['label'] = webPageTitle['title']
+    return URLObj
+
+
+def getPageTitle(urlString):
+    pageTitleResponse = {
+        'valid': False,
+        'title': '',
+    }
+    try:
+        webReq = requests.get(urlString)
+        htmlCode = bs(webReq.content, 'lxml')
+        pageTitleResponse['valid'] = True
+        pageTitleResponse['title'] = htmlCode.select_one('title').text
+    except requests.RequestException as reqExp:
+        exceptionName = type(reqExp).__name__
+        pageTitleResponse['valid'] = False
+        if exceptionName == 'MissingSchema':
+            pageTitleResponse['title'] = """Oops!!!, {0}']""".format(
+                reqExp.args[0])
+        else:
+            pageTitleResponse['title'] = "Oops!!!, Your Bookmarked URL can't be reached"
+    return pageTitleResponse
 
 
 if __name__ == "__main__":

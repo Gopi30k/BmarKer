@@ -1,0 +1,24 @@
+#folder-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  .folder-box {
+    margin: 0 16px 16px 0;
+  }
+}
+
+#links-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+:host {
+  ::ng-deep {
+    .ui-card {
+      padding: 8px;
+      border: 1px solid royalblue;
+    }
+  }
+}

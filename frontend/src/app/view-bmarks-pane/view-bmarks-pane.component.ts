@@ -10,17 +10,24 @@ import { FolderService } from "../folder.service";
 })
 export class ViewBmarksPaneComponent implements OnInit {
   bmarks: any;
+  folders: Array<any>;
+  links: Array<any>;
   constructor(
     private route: ActivatedRoute,
     private folderService: FolderService
   ) {}
 
   ngOnInit() {
-    console.log("asda");
     this.route.paramMap.subscribe((params) => {
+      this.folders = [];
+      this.links = [];
       this.folderService
         .getFolderDependants(params.get("folder"))
-        .subscribe((data) => (this.bmarks = data));
+        .subscribe((data) => {
+          data.data[0].children.forEach((d) => {
+            d.feature === "folder" ? this.folders.push(d) : this.links.push(d);
+          });
+        });
     });
   }
 }

@@ -2,6 +2,10 @@ import { Component, OnInit } from "@angular/core";
 import { DialogService } from "primeng/dynamicdialog";
 import { DynamicDialogRef } from "primeng/dynamicdialog";
 import { MessageService } from "primeng/api";
+import { Router } from "@angular/router";
+import { FolderService } from "../folder.service";
+import { v4 as uuidv4 } from "uuid";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 @Component({
   selector: "app-side-nav",
@@ -15,7 +19,10 @@ export class SideNavComponent implements OnInit {
   ref: DynamicDialogRef;
   constructor(
     public dialogService: DialogService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router: Router,
+    private folderService: FolderService,
+    private httpClient: HttpClient
   ) {}
 
   ngOnInit() {}
@@ -36,8 +43,10 @@ export class SideNavComponent implements OnInit {
         summary: "Bookmark Added",
         detail: `${this.bmarkerURL}`,
       });
-      this.displayURLDialog = false;
+
+      this.saveURLDB(this.bmarkerURL);
       this.bmarkerURL = "";
+      this.displayURLDialog = false;
     } else {
       this.messageService.add({
         key: "tc",
@@ -46,11 +55,25 @@ export class SideNavComponent implements OnInit {
         detail: `${this.bmarkerURL || "Empty"}`,
       });
     }
-
-    console.log(this.bmarkerURL);
   }
 
   cancelURL() {
     this.displayURLDialog = false;
+  }
+
+  saveURLDB(URLlink: string) {
+    let parentKey = this.router.url.split("/").pop();
+    let URLNode = {
+      key: uuidv4(),
+      label: URLlink,
+      data: URLlink,
+      icon: "pi pi-globe",
+      feature: "URLlink",
+      children: [],
+      parent: parentKey,
+      leaf: true,
+    };
+
+    this.folderService.addNewURL(URLNode);
   }
 }

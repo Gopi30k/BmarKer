@@ -1,13 +1,17 @@
-/* #fixed {
-  background: gray;
-  overflow: hidden;
-  height: 500px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+:host {
+  ::ng-deep {
+    .ui-tree {
+      border: none;
+      padding: 0;
+      margin: 16px 0;
 
-} */
-
-/* :host >>> p-tree {
-  position: fixed;
-} */
+      .ui-tree-container {
+        .ui-treenode {
+          .ui-treenode-content:focus {
+            box-shadow: none;
+          }
+        }
+      }
+    }
+  }
+}

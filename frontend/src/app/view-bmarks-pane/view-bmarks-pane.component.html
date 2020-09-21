@@ -1,1 +1,30 @@
-<h1>{{ bmarks | json }}</h1>
+<!-- {{ bmarks | json }} -->
+<div class="show-bmarks">
+  <div id="folders">
+    <h2>Folders</h2>
+    <div id="folder-container">
+      <ng-container *ngFor="let folder of folders">
+        <p-button
+          label="{{ folder.label }}"
+          icon="pi pi-folder"
+          iconPos="left"
+          class="folder-box"
+        ></p-button>
+      </ng-container>
+    </div>
+  </div>
+
+  <div id="links">
+    <h2>Links</h2>
+    <div id="links-container">
+      <ng-container *ngFor="let link of links">
+        <p-card [style]="{ width: '260px' }">
+          <p-header>
+            {{ link.label }}
+          </p-header>
+          {{ link.data }}
+        </p-card>
+      </ng-container>
+    </div>
+  </div>
+</div>
