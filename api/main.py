@@ -56,12 +56,12 @@ def newFolder():
     mongo.db.bookmarks.update_one(
         {'key': parentDoc['key']}, {"$set": parentDoc})
     mongo.db.bookmarks.insert_one(newDoc)
-    return jsonify(success="ok"), 200
+    return jsonify(status="added"), 200
 
 
 @app.route('/addURL', methods=['POST'])
 def newURLLink():
-    newDoc = request.json['url_link']
+    newDoc = request.json['URLNode']
     parentDoc = mongo.db.bookmarks.find_one_or_404({"key": newDoc['parent']})
     parentDoc['children'].append(newDoc['key'])
     parentDoc['leaf'] = False
@@ -86,7 +86,7 @@ def renameFolder():
     docToRename['data'] = renameFolder['data']
     mongo.db.bookmarks.update_one(
         {'key': folderToRenameKey}, {"$set": docToRename})
-    return jsonify(success="ok"), 200
+    return jsonify(status="renamed"), 200
 
 
 @app.route('/deleteFolder', methods=['POST'])
@@ -107,7 +107,7 @@ def deleteFolder():
 
     # Delete the Current Node
     mongo.db.bookmarks.delete_one({'key': delDoc['key']})
-    return jsonify(success="deleted"), 200
+    return jsonify(status="deleted"), 200
 
 
 def linkObjUpdate(URLObj):

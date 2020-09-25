@@ -3,9 +3,9 @@ import { DialogService } from "primeng/dynamicdialog";
 import { DynamicDialogRef } from "primeng/dynamicdialog";
 import { MessageService } from "primeng/api";
 import { Router } from "@angular/router";
-import { FolderService } from "../folder.service";
 import { v4 as uuidv4 } from "uuid";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { BmarkerService } from "../services/bmarker.service";
 
 @Component({
   selector: "app-side-nav",
@@ -21,7 +21,7 @@ export class SideNavComponent implements OnInit {
     public dialogService: DialogService,
     private messageService: MessageService,
     private router: Router,
-    private folderService: FolderService,
+    private bmarkService: BmarkerService,
     private httpClient: HttpClient
   ) {}
 
@@ -74,6 +74,6 @@ export class SideNavComponent implements OnInit {
       leaf: true,
     };
 
-    this.folderService.addNewURL(URLNode);
+    this.bmarkService.addNewBmarkURL(URLNode);
   }
 }

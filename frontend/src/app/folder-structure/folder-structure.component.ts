@@ -1,9 +1,10 @@
 import { Component, OnInit } from "@angular/core";
+import { Location } from "@angular/common";
 import { MenuItem, TreeDragDropService } from "primeng/api";
-import { FolderService } from "../folder.service";
 import { Router } from "@angular/router";
 import { v4 as uuidv4 } from "uuid";
 import { Folder } from "../models";
+import { BmarkerService } from "../services/bmarker.service";
 @Component({
   selector: "app-folder-structure",
   templateUrl: "./folder-structure.component.html",
@@ -19,13 +20,20 @@ export class FolderStructureComponent implements OnInit {
   footerSuccessBtn: string = "";
   folderActionDialog: boolean = false;
 
-  constructor(private folderService: FolderService, private router: Router) {}
-
+  constructor(
+    private bmarkService: BmarkerService,
+    private router: Router,
+    private location: Location
+  ) {}
   ngOnInit() {
-    this.folderService
-      .getFolderCollections()
-      .subscribe((api_data) => (this.folders = this.getFolderData(api_data)));
-    // .subscribe((api_data) => (this.folders = api_data));
+    this.bmarkService.getAllBookmarksObs();
+    this.bmarkService.bmarkerCollections$.subscribe((api_data) => {
+      this.folders = api_data;
+    });
+
+    // this.bmarkService
+    //   .getAllBookmarks()
+    //   .subscribe((api_data) => (this.folders = this.getFolderData(api_data)));
 
     this.optionMenus = [
       {
@@ -78,15 +86,15 @@ export class FolderStructureComponent implements OnInit {
     action: string,
     actionString?: Folder | string
   ) {
-    // if no children return label of leaf Folder Node
+    // if no children return key of leaf Folder Node
     if (folderNode.children === undefined) {
-      folderNode.label.toLowerCase() === folderToFind.label.toLowerCase()
-        ? folderNode.label
+      folderNode.key.toLowerCase() === folderToFind.key.toLowerCase()
+        ? folderNode.key
         : "no match";
     } else {
       // Iterate all children perform actions intended
       folderNode.children.forEach((child, index) => {
-        if (child.label.toLowerCase() === folderToFind.label.toLowerCase()) {
+        if (child.key.toLowerCase() === folderToFind.key.toLowerCase()) {
           if (action === "delete") {
             folderNode.children.splice(index, 1);
           } else if (action === "rename") {
@@ -120,13 +128,23 @@ export class FolderStructureComponent implements OnInit {
   }
 
   deleteFolder(folderToDelete: Folder) {
-    this.nodeRecursiveAction(this.folders[0], folderToDelete, "delete");
+    this.bmarkService
+      .deleteBmarkFolder(folderToDelete.key)
+      .subscribe((response) => {
+        console.log(
+          `API responded on Folder Deletion - ${JSON.stringify(response)}`
+        );
 
-    this.folderService.deleteFolder(folderToDelete.key);
+        if (response["status"] === "deleted") {
+          this.nodeRecursiveAction(this.folders[0], folderToDelete, "delete");
+        } else {
+          // TODO : Throw Popup Error (not deleted)
+        }
+      });
   }
 
   // Dialog Success button actions
-  onSuccessBtnClick() {
+  onConfirmBtnClick() {
     if (this.footerSuccessBtn.toLowerCase() === "rename") {
       let renameString = this.folderNameInput;
       let renameFolder = {
@@ -140,13 +158,23 @@ export class FolderStructureComponent implements OnInit {
         leaf: true,
       };
 
-      this.folderService.renameNewFolder(this.selectedFolder.key, renameFolder);
-      this.nodeRecursiveAction(
-        this.folders[0],
-        this.selectedFolder,
-        "rename",
-        renameString
-      );
+      this.bmarkService
+        .renameBmarkFolder(this.selectedFolder.key, renameFolder)
+        .subscribe((response) => {
+          console.log(
+            `API responded on Folder Rename - ${JSON.stringify(response)}`
+          );
+          if (response["status"] === "renamed") {
+            this.nodeRecursiveAction(
+              this.folders[0],
+              this.selectedFolder,
+              "rename",
+              renameString
+            );
+          } else {
+            // TODO: Throw Popup error (Rename not done)
+          }
+        });
     } else if (this.footerSuccessBtn.toLowerCase() === "add") {
       let newFolderNode = {
         key: uuidv4(),
@@ -159,24 +187,48 @@ export class FolderStructureComponent implements OnInit {
         parent: this.selectedFolder.key,
         leaf: true,
       };
-      this.folders.forEach((fold, index) => {
-        if (
-          fold.label.toLowerCase() === this.selectedFolder.label.toLowerCase()
-        ) {
-          this.folders[index].children !== undefined
-            ? this.folders[index].children.push(newFolderNode)
-            : (this.folders[index].children = [newFolderNode]);
-        } else {
-          this.nodeRecursiveAction(
-            fold,
-            this.selectedFolder,
-            "add",
-            newFolderNode
-          );
-        }
-      });
 
-      this.folderService.addNewFolder(newFolderNode);
+      this.bmarkService
+        .addNewBmarkFolder(newFolderNode)
+        .subscribe((response) => {
+          console.log(
+            `API responded on Folder addition - ${JSON.stringify(response)}`
+          );
+          if (response["status"] === "added") {
+            this.folders.forEach((fold, index) => {
+              if (
+                fold.key.toLowerCase() === this.selectedFolder.key.toLowerCase()
+              ) {
+                this.folders[index].children !== undefined
+                  ? this.folders[index].children.push(newFolderNode)
+                  : (this.folders[index].children = [newFolderNode]);
+
+                // Router referesh
+
+                // this.router
+                //   .navigateByUrl(`bookmarks/${newFolderNode.parent}`, {
+                //     skipLocationChange: true,
+                //   })
+                //   .then(() => {
+                //     console.log(decodeURI(this.location.path()));
+
+                //   });
+                this.router.navigate(["bookmarks/", newFolderNode.parent], {
+                  skipLocationChange: true,
+                });
+              } else {
+                this.nodeRecursiveAction(
+                  fold,
+                  this.selectedFolder,
+                  "add",
+                  newFolderNode
+                );
+              }
+            });
+          } else {
+            // TODO: Throw Popup Error (folder not added)
+          }
+        });
     }
     this.folderActionDialog = false;
   }
@@ -189,6 +241,6 @@ export class FolderStructureComponent implements OnInit {
   onFolderClick(event) {
     // console.log(event.node);
     this.router.navigate(["/bookmarks", event.node.key]);
-    // this.folderService.getFolderDependants(event.node.key);
+    // this.bmarkService.getFolderDependants(event.node.key);
   }
 }

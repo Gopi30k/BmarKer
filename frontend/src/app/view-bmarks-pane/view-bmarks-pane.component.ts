@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { TreeNode } from "primeng/api";
-import { FolderService } from "../folder.service";
+import { BmarkerService } from "../services/bmarker.service";
 
 @Component({
   selector: "app-view-bmarks-pane",
@@ -14,17 +14,17 @@ export class ViewBmarksPaneComponent implements OnInit {
   links: Array<any>;
   constructor(
     private route: ActivatedRoute,
-    private folderService: FolderService
+    private bmarkService: BmarkerService
   ) {}
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
       this.folders = [];
       this.links = [];
-      this.folderService
-        .getFolderDependants(params.get("folder"))
+      this.bmarkService
+        .getFolderSubCollections(params.get("folder"))
         .subscribe((data) => {
-          data.data[0].children.forEach((d) => {
+          data[0].children.forEach((d) => {
             d.feature === "folder" ? this.folders.push(d) : this.links.push(d);
           });
         });
