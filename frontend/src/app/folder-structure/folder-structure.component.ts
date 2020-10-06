@@ -28,7 +28,7 @@ export class FolderStructureComponent implements OnInit {
   ngOnInit() {
     this.bmarkService.getAllBookmarksObs();
     this.bmarkService.bmarkerCollections$.subscribe((api_data) => {
-      this.folders = api_data;
+      this.folders = this.getFolderData(api_data);
     });
 
     // this.bmarkService
@@ -113,6 +113,16 @@ export class FolderStructureComponent implements OnInit {
   }
 
   // context Menu Actions
+  onContextMenuSelect(node, contextMenu) {
+    if (this.selectedFolder.data === "my_bookmarks") {
+      contextMenu.model = contextMenu.model.filter(
+        (menu) => menu.label === "New Folder"
+      );
+    } else {
+      contextMenu.model = this.optionMenus;
+    }
+  }
+
   newFolderDialog(file: Folder) {
     this.dialogTitle = "Add Folder";
     this.footerSuccessBtn = "Add";
@@ -137,6 +147,7 @@ export class FolderStructureComponent implements OnInit {
 
         if (response["status"] === "deleted") {
           this.nodeRecursiveAction(this.folders[0], folderToDelete, "delete");
+          this.refreshRoute(decodeURI(this.location.path()));
         } else {
           // TODO : Throw Popup Error (not deleted)
         }
@@ -175,6 +186,7 @@ export class FolderStructureComponent implements OnInit {
             // TODO: Throw Popup error (Rename not done)
           }
         });
+      this.refreshRoute(decodeURI(this.location.path()));
     } else if (this.footerSuccessBtn.toLowerCase() === "add") {
       let newFolderNode = {
         key: uuidv4(),
@@ -202,20 +214,6 @@ export class FolderStructureComponent implements OnInit {
                 this.folders[index].children !== undefined
                   ? this.folders[index].children.push(newFolderNode)
                   : (this.folders[index].children = [newFolderNode]);
-
-                // Router referesh
-
-                // this.router
-                //   .navigateByUrl(`bookmarks/${newFolderNode.parent}`, {
-                //     skipLocationChange: true,
-                //   })
-                //   .then(() => {
-                //     console.log(decodeURI(this.location.path()));
-
-                //   });
-                this.router.navigate(["bookmarks/", newFolderNode.parent], {
-                  skipLocationChange: true,
-                });
               } else {
                 this.nodeRecursiveAction(
                   fold,
@@ -225,12 +223,17 @@ export class FolderStructureComponent implements OnInit {
                 );
               }
             });
+            this.refreshRoute(decodeURI(this.location.path()));
           } else {
             // TODO: Throw Popup Error (folder not added)
           }
         });
     }
     this.folderActionDialog = false;
+  }
+
+  refreshRoute(uri: string) {
+    this.router.navigate([uri], { skipLocationChange: true });
   }
 
   // Dialog Cancel button action

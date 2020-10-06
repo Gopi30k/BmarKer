@@ -112,10 +112,8 @@ export class BmarkerService {
   }
 
   addNewBmarkURL(URLNode) {
-    return this.http
-      .post<any>("http://127.0.0.1:5000/addURL", {
-        URLNode: URLNode,
-      })
-      .subscribe((d) => console.log(d));
+    return this.http.post<any>("http://127.0.0.1:5000/addURL", {
+      URLNode: URLNode,
+    });
   }
 }

@@ -38,8 +38,9 @@ def recursiveNodeIter(node, action, *args, **kwargs):
 @app.route('/', methods=['POST', 'GET'])
 def getBookmarkTree():
     if request.method == 'POST':
+        key_name = request.json['bookmark']
         bookmarkTree = mongo.db.bookmarks.find_one_or_404(
-            {"key": request.json['bookmark']}, {"_id": 0})
+            {"key": key_name} if key_name != 'my_bookmarks' else {"data": key_name}, {"_id": 0})
     if request.method == 'GET':
         bookmarkTree = mongo.db.bookmarks.find_one_or_404(
             {"key": "5e9a7e56-858b-4cc8-be8b-14ad6d1801a8"}, {"_id": 0})
@@ -70,7 +71,7 @@ def newURLLink():
     newDoc = linkObjUpdate(newDoc)
     print(newDoc)
     mongo.db.bookmarks.insert_one(newDoc)
-    return jsonify(success="ok"), 200
+    return jsonify(status="urlAdded"), 200
 
 
 @app.route('/renameFolder', methods=['POST'])

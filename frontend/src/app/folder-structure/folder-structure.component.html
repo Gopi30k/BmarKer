@@ -8,6 +8,7 @@
   draggableScope="self"
   droppableScope="self"
   (onNodeSelect)="onFolderClick($event)"
+  (contextmenu)="onContextMenuSelect($event, options)"
 ></p-tree>
 
 <p-contextMenu #options appendTo="body" [model]="optionMenus"></p-contextMenu>

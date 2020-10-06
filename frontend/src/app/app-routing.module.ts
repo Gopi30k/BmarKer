@@ -11,10 +11,10 @@ const routes: Routes = [
   },
   {
     path: "",
-    redirectTo: "bookmarks/5e9a7e56-858b-4cc8-be8b-14ad6d1801a8",
+    redirectTo: "/bookmarks/my_bookmarks",
     pathMatch: "full",
   },
-  { path: "**", redirectTo: "/", pathMatch: "full" },
+  { path: "**", redirectTo: "/bookmarks/my_bookmarks", pathMatch: "full" },
 ];
 
 @NgModule({

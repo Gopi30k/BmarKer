@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { Location } from "@angular/common";
 import { DialogService } from "primeng/dynamicdialog";
 import { DynamicDialogRef } from "primeng/dynamicdialog";
 import { MessageService } from "primeng/api";
@@ -22,7 +23,7 @@ export class SideNavComponent implements OnInit {
     private messageService: MessageService,
     private router: Router,
     private bmarkService: BmarkerService,
-    private httpClient: HttpClient
+    private location: Location
   ) {}
 
   ngOnInit() {}
@@ -74,6 +75,13 @@ export class SideNavComponent implements OnInit {
       leaf: true,
     };
 
-    this.bmarkService.addNewBmarkURL(URLNode);
+    this.bmarkService.addNewBmarkURL(URLNode).subscribe((response) => {
+      console.log(
+        `API responded on Folder addition - ${JSON.stringify(response)}`
+      );
+      if (response["status"] === "urlAdded") {
+        this.router.navigate([decodeURI(this.location.path())]);
+      }
+    });
   }
 }

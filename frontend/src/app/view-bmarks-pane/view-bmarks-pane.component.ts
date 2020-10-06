@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { TreeNode } from "primeng/api";
 import { BmarkerService } from "../services/bmarker.service";
 
@@ -14,8 +14,13 @@ export class ViewBmarksPaneComponent implements OnInit {
   links: Array<any>;
   constructor(
     private route: ActivatedRoute,
-    private bmarkService: BmarkerService
-  ) {}
+    private bmarkService: BmarkerService,
+    private router: Router
+  ) {
+    this.router.routeReuseStrategy.shouldReuseRoute = function () {
+      return false;
+    };
+  }
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
