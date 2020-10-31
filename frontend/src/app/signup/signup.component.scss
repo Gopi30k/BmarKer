@@ -1,0 +1,13 @@
+.signup {
+  display: flex;
+  padding: 32px;
+  #signup-form {
+    flex: 50%;
+    .signup-btn {
+      text-align: center;
+    }
+  }
+  #signup-context {
+    flex: 50%;
+  }
+}

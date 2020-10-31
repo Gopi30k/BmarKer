@@ -24,6 +24,10 @@ export class BmarkerService {
   urlLinkCollections$: Observable<any>;
   constructor(private http: HttpClient) {}
 
+  signupUser(userData: Object) {
+    return this.http.post("http://127.0.0.1:5000/signup", { signup: userData });
+  }
+
   getAllBookmarks() {
     return this.http
       .get<Folder[]>("http://127.0.0.1:5000/")

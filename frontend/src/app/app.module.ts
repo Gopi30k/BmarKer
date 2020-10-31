@@ -17,6 +17,8 @@ import { AngularFireDatabaseModule } from "@angular/fire/database";
 import { NavBarComponent } from "./nav-bar/nav-bar.component";
 import { AngularFontAwesomeModule } from "angular-font-awesome";
 import { BmarkerComponent } from './bmarker/bmarker.component';
+import { SignupComponent } from './signup/signup.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,8 @@ import { BmarkerComponent } from './bmarker/bmarker.component';
     SideNavComponent,
     NavBarComponent,
     BmarkerComponent,
+    SignupComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,

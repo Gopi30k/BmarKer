@@ -1,20 +1,4 @@
-<main id="body-container">
-  <nav>
-    <app-nav-bar></app-nav-bar>
-  </nav>
-  <mat-sidenav-container class="bmaker-container">
-    <mat-sidenav
-      #sidenav
-      mode="side"
-      opened
-      class="bmarker-sidenav"
-      [fixedInViewport]="true"
-      [fixedTopGap]="50"
-    >
-      <app-side-nav></app-side-nav>
-    </mat-sidenav>
-    <mat-sidenav-content>
-      <router-outlet></router-outlet>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
-</main>
+<nav>
+  <app-nav-bar></app-nav-bar>
+</nav>
+<router-outlet></router-outlet>

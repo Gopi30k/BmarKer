@@ -1,0 +1,77 @@
+<div class="signup">
+  <div id="signup-context">
+    <h2>SIGN UP</h2>
+    <p>to manage your cluttered bookmarks at one place</p>
+  </div>
+  <form id="signup-form" #signup="ngForm">
+    <div class="ui-fluid p-grid">
+      <div class="p-field p-col-12 p-md-6">
+        <label for="firstname">FirstName</label>
+        <input
+          id="firstname"
+          type="text"
+          name="fname"
+          autocomplete="off"
+          pInputText
+          ngModel
+        />
+      </div>
+      <div class="p-field p-col-12 p-md-6">
+        <label for="lastname">LastName</label>
+        <input
+          id="lastname"
+          type="text"
+          name="lname"
+          autocomplete="off"
+          pInputText
+          ngModel
+        />
+      </div>
+      <div class="p-field p-col-12 p-md-12">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          autocomplete="off"
+          pInputText
+          ngModel
+        />
+      </div>
+      <div class="p-field p-col-12 p-md-6">
+        <div class="p-field">
+          <label for="password">Password</label>
+          <input
+            id="password"
+            type="password"
+            name="password"
+            autocomplete="off"
+            pInputText
+            ngModel
+          />
+        </div>
+        <div class="p-field">
+          <label for="cpassword">Confirm Password</label>
+          <input
+            id="cpassword"
+            type="password"
+            name="cpassword"
+            autocomplete="off"
+            pInputText
+            ngModel
+          />
+        </div>
+      </div>
+    </div>
+    <div class="signup-btn">
+      <button
+        pButton
+        type="button"
+        label="Sign Up"
+        class="ui-button-raised"
+        (click)="signupUser(signup.value)"
+      ></button>
+    </div>
+  </form>
+</div>
+{{ signup.value | json }}

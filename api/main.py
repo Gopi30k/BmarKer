@@ -1,17 +1,20 @@
 from flask import Flask
+from flask import json
 from flask_cors import CORS, cross_origin
 from flask import jsonify
 from flask import request
 from flask_pymongo import PyMongo
 import requests
-import favicon
 from bs4 import BeautifulSoup as bs
+from bson.objectid import ObjectId
+from bson import json_util
 
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['DB_NAME'] = 'projects'
-app.config['MONGO_URI'] = 'mongodb://localhost:27017/projects'
+app.config['MONGO_URI'] = 'mongodb://localhost:27017/bmarker'
+# app.config['MONGO_URI'] = 'mongodb+srv://admin:0admin0@bmarkercluster.iid44.mongodb.net/bmarker?retryWrites=true&w=majority'
 
 mongo = PyMongo(app)
 
@@ -35,6 +38,35 @@ def recursiveNodeIter(node, action, *args, **kwargs):
     return node
 
 
+@app.route('/signup', methods=['POST'])
+def signup():
+    userObj = request.json['signup']
+    user = {
+        "_id": ObjectId(),
+        "fname": userObj['fname'],
+        "lname": userObj['lname'],
+        "email": userObj['email'],
+        "password": userObj['password'],
+        "root_bookmark_id": ObjectId()
+    }
+
+    userDoc = mongo.db.user.insert_one(user)
+    bookmark = {"_id": user.get('root_bookmark_id'), "key": "5e9a7e56-858b-4cc8-be8b-14ad6d1801a8", "user_id": user.get('_id'),
+    "label": "My Bookmarks", 
+    "data": "my_bookmarks",
+    "expandedIcon": "pi pi-folder-open",
+    "collapsedIcon": "pi pi-folder",
+    "feature": "folder",
+    "children": [],
+    "parent": "null",
+    "leaf": False
+    }
+
+    bookmarkDoc = mongo.db.bookmarks.insert_one(bookmark)
+
+    return jsonify(status="userAdded"), 200
+
+
 @app.route('/', methods=['POST', 'GET'])
 def getBookmarkTree():
     if request.method == 'POST':
@@ -45,7 +77,8 @@ def getBookmarkTree():
         bookmarkTree = mongo.db.bookmarks.find_one_or_404(
             {"key": "5e9a7e56-858b-4cc8-be8b-14ad6d1801a8"}, {"_id": 0})
     recursiveNodeIter(bookmarkTree, 'fetch')
-    return jsonify({'data': [bookmarkTree]})
+    # return jsonify({'data': [bookmarkTree]})
+    return json.dumps({'data': [bookmarkTree]}, default=json_util.default)
 
 
 @app.route('/addFolder', methods=['POST'])
