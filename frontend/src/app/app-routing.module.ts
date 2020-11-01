@@ -20,11 +20,11 @@ const routes: Routes = [
     component: BmarkerComponent,
   },
 
-  {
-    path: "",
-    redirectTo: "/bookmarks/my_bookmarks",
-    pathMatch: "full",
-  },
+  // {
+  //   path: "",
+  //   redirectTo: "/bookmarks/my_bookmarks",
+  //   pathMatch: "full",
+  // },
   // { path: "**", redirectTo: "/bookmarks/my_bookmarks", pathMatch: "full" },
 ];
 

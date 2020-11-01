@@ -25,7 +25,19 @@ export class BmarkerService {
   constructor(private http: HttpClient) {}
 
   signupUser(userData: Object) {
-    return this.http.post("http://127.0.0.1:5000/signup", { signup: userData });
+    return this.http.post(
+      "http://127.0.0.1:5000/signup",
+      { signup: userData },
+      { observe: "response" }
+    );
+  }
+
+  loginUser(userData: Object) {
+    return this.http.post(
+      "http://127.0.0.1:5000/login",
+      { login: userData },
+      { observe: "response" }
+    );
   }
 
   getAllBookmarks() {
@@ -34,9 +46,9 @@ export class BmarkerService {
       .pipe(map((data) => data["data"]));
   }
 
-  getAllBookmarksObs() {
+  getAllBookmarksObs(rootBookmark) {
     this.http
-      .get<Folder[]>("http://127.0.0.1:5000/")
+      .post<Folder[]>("http://127.0.0.1:5000/", { bookmark: rootBookmark })
       .subscribe((data) => this.bmarkerCollections.next(data["data"]));
 
     // [this.folderCollections$, this.urlLinkCollections$] = partition(

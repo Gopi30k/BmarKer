@@ -1,3 +1,6 @@
+import bcrypt
+from os import error
+from dns import message
 from flask import Flask
 from flask import json
 from flask_cors import CORS, cross_origin
@@ -12,7 +15,7 @@ from bson import json_util
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
-app.config['DB_NAME'] = 'projects'
+app.config['DB_NAME'] = 'bmarker'
 app.config['MONGO_URI'] = 'mongodb://localhost:27017/bmarker'
 # app.config['MONGO_URI'] = 'mongodb+srv://admin:0admin0@bmarkercluster.iid44.mongodb.net/bmarker?retryWrites=true&w=majority'
 
@@ -46,36 +49,57 @@ def signup():
         "fname": userObj['fname'],
         "lname": userObj['lname'],
         "email": userObj['email'],
-        "password": userObj['password'],
+        "password": bcrypt.hashpw(userObj['password'].encode('utf-8'), bcrypt.gensalt()),
         "root_bookmark_id": ObjectId()
     }
+    # Check unique mail ID
+    userCheck = mongo.db.user.find_one({"email": user['email']})
+    if not(userCheck):
+        userDoc = mongo.db.user.insert_one(user)
+        bookmark = {
+            "_id": user.get('root_bookmark_id'),
+            "key": "5e9a7e56-858b-4cc8-be8b-14ad6d1801a8",
+            "user_id": user.get('_id'),
+            "label": "My Bookmarks",
+            "data": "my_bookmarks",
+            "expandedIcon": "pi pi-folder-open",
+            "collapsedIcon": "pi pi-folder",
+            "feature": "folder",
+            "children": [],
+            "parent": "null",
+            "leaf": False
+        }
 
-    userDoc = mongo.db.user.insert_one(user)
-    bookmark = {"_id": user.get('root_bookmark_id'), "key": "5e9a7e56-858b-4cc8-be8b-14ad6d1801a8", "user_id": user.get('_id'),
-    "label": "My Bookmarks", 
-    "data": "my_bookmarks",
-    "expandedIcon": "pi pi-folder-open",
-    "collapsedIcon": "pi pi-folder",
-    "feature": "folder",
-    "children": [],
-    "parent": "null",
-    "leaf": False
-    }
+        bookmarkDoc = mongo.db.bookmarks.insert_one(bookmark)
+        return jsonify(message="userAdded"), 200
+    else:
+        return "EmailId already exists", 400
+    #     return jsonify({'message': 'userAdded'}), 200
+    # else:
+    #     return jsonify({'error': 'EmailId already exists'}), 400
 
-    bookmarkDoc = mongo.db.bookmarks.insert_one(bookmark)
 
-    return jsonify(status="userAdded"), 200
+@app.route('/login', methods=['POST'])
+def login():
+    loginUserObj = request.json['login']
+    userDoc = mongo.db.user.find_one({"email": loginUserObj['email']})
+    if not(userDoc):
+        return jsonify({'error': 'Account not found, Check your Email Address'}), 404
+    elif not(bcrypt.checkpw(loginUserObj['password'].encode('utf-8'), userDoc['password'])):
+        return jsonify({'error': 'Invalid Password'}), 404
+    return json.dumps({
+        'user_id': str(userDoc['_id']),
+        'root_bookmark': str(userDoc['root_bookmark_id'])
+    }, default=json_util.default), 200
 
 
 @app.route('/', methods=['POST', 'GET'])
 def getBookmarkTree():
+    bookmarkTree = None
     if request.method == 'POST':
         key_name = request.json['bookmark']
-        bookmarkTree = mongo.db.bookmarks.find_one_or_404(
-            {"key": key_name} if key_name != 'my_bookmarks' else {"data": key_name}, {"_id": 0})
-    if request.method == 'GET':
-        bookmarkTree = mongo.db.bookmarks.find_one_or_404(
-            {"key": "5e9a7e56-858b-4cc8-be8b-14ad6d1801a8"}, {"_id": 0})
+        bookmarkTree = mongo.db.bookmarks.find_one(
+            {"_id": ObjectId(key_name)})
     recursiveNodeIter(bookmarkTree, 'fetch')
     # return jsonify({'data': [bookmarkTree]})
     return json.dumps({'data': [bookmarkTree]}, default=json_util.default)

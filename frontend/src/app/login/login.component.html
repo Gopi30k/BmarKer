@@ -3,15 +3,28 @@
     <h2>SIGN IN</h2>
     <p>to view your organized bookmarks</p>
   </div>
-  <div id="signin-form">
+  <form id="signin-form" #login="ngForm">
     <div class="ui-fluid">
       <div class="p-field p-col-12 p-md-5">
         <label for="email">Email</label>
-        <input id="email" type="email" pInputText />
+        <input
+          id="email"
+          type="email"
+          name="email"
+          autocomplete="off"
+          pInputText
+          ngModel
+        />
       </div>
       <div class="p-field p-col-12 p-md-5">
         <label for="password">Password</label>
-        <input id="password" type="password" pInputText />
+        <input
+          id="password"
+          type="password"
+          name="password"
+          pInputText
+          ngModel
+        />
       </div>
     </div>
     <div class="signin-btn">
@@ -20,7 +33,8 @@
         type="button"
         label="Sign In"
         class="ui-button-raised"
+        (click)="loginUser(login.value)"
       ></button>
     </div>
-  </div>
+  </form>
 </div>

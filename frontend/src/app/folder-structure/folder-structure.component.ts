@@ -5,6 +5,7 @@ import { Router } from "@angular/router";
 import { v4 as uuidv4 } from "uuid";
 import { Folder } from "../models";
 import { BmarkerService } from "../services/bmarker.service";
+import { ActivatedRoute } from "@angular/router";
 @Component({
   selector: "app-folder-structure",
   templateUrl: "./folder-structure.component.html",
@@ -23,10 +24,13 @@ export class FolderStructureComponent implements OnInit {
   constructor(
     private bmarkService: BmarkerService,
     private router: Router,
+    private route: ActivatedRoute,
     private location: Location
   ) {}
   ngOnInit() {
-    this.bmarkService.getAllBookmarksObs();
+    this.bmarkService.getAllBookmarksObs(
+      this.route.snapshot.paramMap.get("folder")
+    );
     this.bmarkService.bmarkerCollections$.subscribe((api_data) => {
       this.folders = this.getFolderData(api_data);
     });

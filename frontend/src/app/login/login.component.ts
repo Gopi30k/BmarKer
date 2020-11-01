@@ -1,15 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { BmarkerService } from "../services/bmarker.service";
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  selector: "app-login",
+  templateUrl: "./login.component.html",
+  styleUrls: ["./login.component.scss"],
 })
 export class LoginComponent implements OnInit {
+  constructor(private bmarkerService: BmarkerService, private router: Router) {}
 
-  constructor() { }
+  ngOnInit() {}
 
-  ngOnInit() {
+  loginUser(userCreds: Object) {
+    this.bmarkerService.loginUser(userCreds).subscribe((response) => {
+      if (response.ok) {
+        console.log(response.body);
+
+        this.router.navigate(["bookmarks", response.body["root_bookmark"]]);
+      }
+    });
   }
-
 }
