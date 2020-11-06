@@ -11,6 +11,7 @@ import requests
 from bs4 import BeautifulSoup as bs
 from bson.objectid import ObjectId
 from bson import json_util
+import uuid
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -23,20 +24,28 @@ mongo = PyMongo(app)
 
 
 def recursiveNodeIter(node, action, *args, **kwargs):
-
+    # breakpoint()
     i = 0
     while i < len(node['children']):
         childNode = mongo.db.bookmarks.find_one_or_404(
-            {"key": node['children'][i]}, {"_id": 0})
+            {"_id": ObjectId(node['children'][i])})
         if childNode['leaf'] == True:
             if action == 'fetch':
                 node['children'][i] = childNode
             elif action == 'delete':
                 # Deleting the Leaf Node
-                mongo.db.bookmarks.delete_one({'key': childNode['key']})
+                mongo.db.bookmarks.delete_one(
+                    {'_id': ObjectId(childNode['_id'])})
         else:
-            node['children'][i] = recursiveNodeIter(mongo.db.bookmarks.find_one_or_404(
-                {"key": node['children'][i]}, {"_id": 0}), action)
+            itrChildnode = mongo.db.bookmarks.find_one_or_404(
+                {"_id": ObjectId(node['children'][i])})
+            if action == 'fetch':
+                node['children'][i] = recursiveNodeIter(itrChildnode, action)
+            elif action == 'delete':
+                nodeToDel = recursiveNodeIter(itrChildnode, action)
+                mongo.db.bookmarks.delete_one(
+                    {'_id': ObjectId(nodeToDel['_id'])})
+
         i += 1
     return node
 
@@ -58,8 +67,8 @@ def signup():
         userDoc = mongo.db.user.insert_one(user)
         bookmark = {
             "_id": user.get('root_bookmark_id'),
-            "key": "5e9a7e56-858b-4cc8-be8b-14ad6d1801a8",
             "user_id": user.get('_id'),
+            "key": str(uuid.uuid4()),
             "label": "My Bookmarks",
             "data": "my_bookmarks",
             "expandedIcon": "pi pi-folder-open",
@@ -108,11 +117,14 @@ def getBookmarkTree():
 @app.route('/addFolder', methods=['POST'])
 def newFolder():
     newDoc = request.json['folder']
-    parentDoc = mongo.db.bookmarks.find_one_or_404({"key": newDoc['parent']})
-    parentDoc['children'].append(newDoc['key'])
+    newDoc['_id'] = ObjectId()
+    parentDoc = mongo.db.bookmarks.find_one_or_404(
+        {"key": newDoc['parent']})
+    parentDoc['children'].append(ObjectId(newDoc['_id']))
+    newDoc['user_id'] = parentDoc['user_id']
     parentDoc['leaf'] = False
     mongo.db.bookmarks.update_one(
-        {'key': parentDoc['key']}, {"$set": parentDoc})
+        {'_id': ObjectId(parentDoc['_id']), "user_id": ObjectId(parentDoc["user_id"])}, {"$set": parentDoc})
     mongo.db.bookmarks.insert_one(newDoc)
     return jsonify(status="added"), 200
 
@@ -126,7 +138,6 @@ def newURLLink():
     mongo.db.bookmarks.update_one(
         {'key': parentDoc['key']}, {"$set": parentDoc})
     newDoc = linkObjUpdate(newDoc)
-    print(newDoc)
     mongo.db.bookmarks.insert_one(newDoc)
     return jsonify(status="urlAdded"), 200
 
@@ -137,7 +148,7 @@ def renameFolder():
     folderToRenameKey = request.json['key']
     renameFolder = request.json['renameFolder']
     docToRename = mongo.db.bookmarks.find_one_or_404(
-        {'key': folderToRenameKey}, {"_id": 0})
+        {'key': folderToRenameKey})
 
     # Rename the Current Node
     docToRename['label'] = renameFolder['label']
@@ -151,20 +162,25 @@ def renameFolder():
 def deleteFolder():
     folderToDelKey = request.json['key']
     delDoc = mongo.db.bookmarks.find_one_or_404(
-        {'key': folderToDelKey}, {"_id": 0})
+        {'key': folderToDelKey})
     # Delete all children Nodes Recursively
     if(delDoc['leaf'] != True):
-        # recursiveNodeIter(delDoc, 'delete')
-        mongo.db.bookmarks.delete_many({'parent': delDoc['key']})
+        recursiveNodeIter(delDoc, 'delete')
     # Delete Name in Parent Array
     parentNode = mongo.db.bookmarks.find_one_or_404(
-        {"key": delDoc['parent']}, {"_id": 0})
-    parentNode['children'].remove(delDoc['key'])
+        {"key": delDoc['parent']})
+    parentNode['children'].remove(delDoc['_id'])
     mongo.db.bookmarks.update_one(
-        {"key": delDoc['parent']}, {"$set": parentNode})
+        {
+            "_id": ObjectId(parentNode["_id"]),
+            "key": delDoc['parent']
+        }, {"$set": parentNode})
 
     # Delete the Current Node
-    mongo.db.bookmarks.delete_one({'key': delDoc['key']})
+    mongo.db.bookmarks.delete_one({
+        "_id": ObjectId(delDoc["_id"]),
+        "key": delDoc["key"]
+    })
     return jsonify(status="deleted"), 200
 
 

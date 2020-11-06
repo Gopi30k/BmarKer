@@ -163,6 +163,8 @@ export class FolderStructureComponent implements OnInit {
     if (this.footerSuccessBtn.toLowerCase() === "rename") {
       let renameString = this.folderNameInput;
       let renameFolder = {
+        _id: { $oid: "" },
+        user_id: { $oid: "" },
         label: this.folderNameInput,
         data: this.folderNameInput,
         expandedIcon: "pi pi-folder-open",
@@ -193,6 +195,8 @@ export class FolderStructureComponent implements OnInit {
       this.refreshRoute(decodeURI(this.location.path()));
     } else if (this.footerSuccessBtn.toLowerCase() === "add") {
       let newFolderNode = {
+        _id: { $oid: "" },
+        user_id: { $oid: "" },
         key: uuidv4(),
         label: this.folderNameInput,
         data: this.folderNameInput,

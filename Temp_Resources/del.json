@@ -1,0 +1,155 @@
+[{
+  "_id": {
+    "$oid": "5fa1b3b6fdbf66aaa483a90b"
+  },
+  "user_id": {
+    "$oid": "5fa1b3b6fdbf66aaa483a90a"
+  },
+  "key": "45ae40ae-24f1-4df5-b50e-a47c7d13feb2",
+  "label": "My Bookmarks",
+  "data": "my_bookmarks",
+  "expandedIcon": "pi pi-folder-open",
+  "collapsedIcon": "pi pi-folder",
+  "feature": "folder",
+  "children": [
+    {
+      "$oid": "5fa2826fb475cb456edda913"
+    }
+  ],
+  "parent": "null",
+  "leaf": false
+},{
+  "_id": {
+    "$oid": "5fa2826fb475cb456edda913"
+  },
+  "user_id": {
+    "$oid": "5fa1b3b6fdbf66aaa483a90a"
+  },
+  "key": "456ce607-e1e7-4ba2-960c-91279d6b2a23",
+  "label": "help0",
+  "data": "help0",
+  "expandedIcon": "pi pi-folder-open",
+  "collapsedIcon": "pi pi-folder",
+  "feature": "folder",
+  "children": [
+    {
+      "$oid": "5fa28277b475cb456edda914"
+    },
+    {
+      "$oid": "5fa28280b475cb456edda915"
+    },
+    {
+      "$oid": "5fa2829ab475cb456edda919"
+    }
+  ],
+  "parent": "45ae40ae-24f1-4df5-b50e-a47c7d13feb2",
+  "leaf": false
+},{
+  "_id": {
+    "$oid": "5fa28277b475cb456edda914"
+  },
+  "user_id": {
+    "$oid": "5fa1b3b6fdbf66aaa483a90a"
+  },
+  "key": "943fcc0e-4c6b-4d75-b35c-5310fa8ea071",
+  "label": "help1",
+  "data": "help1",
+  "expandedIcon": "pi pi-folder-open",
+  "collapsedIcon": "pi pi-folder",
+  "feature": "folder",
+  "children": [
+    {
+      "$oid": "5fa28286b475cb456edda916"
+    }
+  ],
+  "parent": "456ce607-e1e7-4ba2-960c-91279d6b2a23",
+  "leaf": false
+},{
+  "_id": {
+    "$oid": "5fa28280b475cb456edda915"
+  },
+  "user_id": {
+    "$oid": "5fa1b3b6fdbf66aaa483a90a"
+  },
+  "key": "23ce7f7f-337a-462a-8ec4-a104bbf86ce0",
+  "label": "help2",
+  "data": "help2",
+  "expandedIcon": "pi pi-folder-open",
+  "collapsedIcon": "pi pi-folder",
+  "feature": "folder",
+  "children": [
+    {
+      "$oid": "5fa28295b475cb456edda918"
+    }
+  ],
+  "parent": "456ce607-e1e7-4ba2-960c-91279d6b2a23",
+  "leaf": false
+},{
+  "_id": {
+    "$oid": "5fa28286b475cb456edda916"
+  },
+  "user_id": {
+    "$oid": "5fa1b3b6fdbf66aaa483a90a"
+  },
+  "key": "f17c13b2-4412-4035-a7ee-11ac10766214",
+  "label": "herlp11",
+  "data": "herlp11",
+  "expandedIcon": "pi pi-folder-open",
+  "collapsedIcon": "pi pi-folder",
+  "feature": "folder",
+  "children": [
+    {
+      "$oid": "5fa2828eb475cb456edda917"
+    }
+  ],
+  "parent": "943fcc0e-4c6b-4d75-b35c-5310fa8ea071",
+  "leaf": false
+},{
+  "_id": {
+    "$oid": "5fa2828eb475cb456edda917"
+  },
+  "user_id": {
+    "$oid": "5fa1b3b6fdbf66aaa483a90a"
+  },
+  "key": "335462dc-070f-4c2d-8dd8-0737104d56b5",
+  "label": "herlp111",
+  "data": "herlp111",
+  "expandedIcon": "pi pi-folder-open",
+  "collapsedIcon": "pi pi-folder",
+  "feature": "folder",
+  "children": [],
+  "parent": "f17c13b2-4412-4035-a7ee-11ac10766214",
+  "leaf": true
+},{
+  "_id": {
+    "$oid": "5fa28295b475cb456edda918"
+  },
+  "user_id": {
+    "$oid": "5fa1b3b6fdbf66aaa483a90a"
+  },
+  "key": "f5b1b9e5-9810-4b54-9dca-08d77765808a",
+  "label": "htlp31",
+  "data": "htlp31",
+  "expandedIcon": "pi pi-folder-open",
+  "collapsedIcon": "pi pi-folder",
+  "feature": "folder",
+  "children": [],
+  "parent": "23ce7f7f-337a-462a-8ec4-a104bbf86ce0",
+  "leaf": true
+},{
+  "_id": {
+    "$oid": "5fa2829ab475cb456edda919"
+  },
+  "user_id": {
+    "$oid": "5fa1b3b6fdbf66aaa483a90a"
+  },
+  "key": "8a236477-a438-4882-854f-4ddba6cc309c",
+  "label": "help3",
+  "data": "help3",
+  "expandedIcon": "pi pi-folder-open",
+  "collapsedIcon": "pi pi-folder",
+  "feature": "folder",
+  "children": [],
+  "parent": "456ce607-e1e7-4ba2-960c-91279d6b2a23",
+  "leaf": true
+}]

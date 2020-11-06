@@ -1,6 +1,8 @@
 import { TreeNode } from "primeng/api";
 
 export interface Folder {
+  _id: { $oid: string };
+  user_id: { $oid: string };
   label?: string;
   data?: any;
   icon?: any;

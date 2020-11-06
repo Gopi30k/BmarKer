@@ -16,8 +16,8 @@ export class LoginComponent implements OnInit {
     this.bmarkerService.loginUser(userCreds).subscribe((response) => {
       if (response.ok) {
         console.log(response.body);
-
-        this.router.navigate(["bookmarks", response.body["root_bookmark"]]);
+        let responseObj = response.body;
+        this.router.navigate(["bookmarks", responseObj["root_bookmark"]]);
       }
     });
   }
