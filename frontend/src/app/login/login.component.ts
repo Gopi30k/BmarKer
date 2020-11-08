@@ -17,7 +17,8 @@ export class LoginComponent implements OnInit {
       if (response.ok) {
         console.log(response.body);
         let responseObj = response.body;
-        this.router.navigate(["bookmarks", responseObj["root_bookmark"]]);
+        localStorage.setItem("user", responseObj["user_id"]);
+        this.router.navigate(["bookmarks", responseObj["root_bookmark_key"]]);
       }
     });
   }

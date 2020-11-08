@@ -46,9 +46,9 @@ export class BmarkerService {
       .pipe(map((data) => data["data"]));
   }
 
-  getAllBookmarksObs(rootBookmark) {
+  getAllBookmarksObs(userBmarkObj) {
     this.http
-      .post<Folder[]>("http://127.0.0.1:5000/", { bookmark: rootBookmark })
+      .post<Folder[]>("http://127.0.0.1:5000/", userBmarkObj)
       .subscribe((data) => this.bmarkerCollections.next(data["data"]));
 
     // [this.folderCollections$, this.urlLinkCollections$] = partition(
@@ -114,16 +114,22 @@ export class BmarkerService {
     });
   }
 
-  renameBmarkFolder(folderToRenameKey: string, renameFolder: Folder) {
+  renameBmarkFolder(
+    folderToRenameKey: string,
+    user: string,
+    renameFolder: Folder
+  ) {
     return this.http.post<Folder>("http://127.0.0.1:5000/renameFolder", {
       key: folderToRenameKey,
-      renameFolder: renameFolder,
+      user,
+      renameFolder,
     });
   }
 
-  deleteBmarkFolder(folderToDelKey: string) {
+  deleteBmarkFolder(folderToDelKey: string, user: string) {
     return this.http.post<Folder>("http://127.0.0.1:5000/deleteFolder", {
       key: folderToDelKey,
+      user,
     });
   }
 

@@ -1,7 +1,4 @@
-<main id="body-container">
-  <nav>
-    <app-nav-bar></app-nav-bar>
-  </nav>
+<div id="body-container">
   <mat-sidenav-container class="bmaker-container">
     <mat-sidenav
       #sidenav
@@ -14,7 +11,7 @@
       <app-side-nav></app-side-nav>
     </mat-sidenav>
     <mat-sidenav-content>
-      <router-outlet></router-outlet>
+      <router-outlet name="view"></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>
-</main>
+</div>

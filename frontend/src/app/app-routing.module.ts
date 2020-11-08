@@ -18,6 +18,13 @@ const routes: Routes = [
   {
     path: "bookmarks/:folder",
     component: BmarkerComponent,
+    // children: [
+    //   {
+    //     path: "",
+    //     component: ViewBmarksPaneComponent,
+    //     outlet: "view",
+    //   },
+    // ],
   },
 
   // {

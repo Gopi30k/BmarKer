@@ -28,9 +28,11 @@ export class FolderStructureComponent implements OnInit {
     private location: Location
   ) {}
   ngOnInit() {
-    this.bmarkService.getAllBookmarksObs(
-      this.route.snapshot.paramMap.get("folder")
-    );
+    let userBookmarkReqObj = {
+      user_id: localStorage.getItem("user"),
+      bookmark_key: this.route.snapshot.paramMap.get("folder"),
+    };
+    this.bmarkService.getAllBookmarksObs(userBookmarkReqObj);
     this.bmarkService.bmarkerCollections$.subscribe((api_data) => {
       this.folders = this.getFolderData(api_data);
     });
@@ -143,7 +145,7 @@ export class FolderStructureComponent implements OnInit {
 
   deleteFolder(folderToDelete: Folder) {
     this.bmarkService
-      .deleteBmarkFolder(folderToDelete.key)
+      .deleteBmarkFolder(folderToDelete.key, localStorage.getItem("user"))
       .subscribe((response) => {
         console.log(
           `API responded on Folder Deletion - ${JSON.stringify(response)}`
@@ -176,7 +178,11 @@ export class FolderStructureComponent implements OnInit {
       };
 
       this.bmarkService
-        .renameBmarkFolder(this.selectedFolder.key, renameFolder)
+        .renameBmarkFolder(
+          this.selectedFolder.key,
+          localStorage.getItem("user"),
+          renameFolder
+        )
         .subscribe((response) => {
           console.log(
             `API responded on Folder Rename - ${JSON.stringify(response)}`
@@ -196,7 +202,7 @@ export class FolderStructureComponent implements OnInit {
     } else if (this.footerSuccessBtn.toLowerCase() === "add") {
       let newFolderNode = {
         _id: { $oid: "" },
-        user_id: { $oid: "" },
+        user_id: localStorage.getItem("user"),
         key: uuidv4(),
         label: this.folderNameInput,
         data: this.folderNameInput,
