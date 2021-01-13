@@ -65,6 +65,8 @@ export class SideNavComponent implements OnInit {
   saveURLDB(URLlink: string) {
     let parentKey = this.router.url.split("/").pop();
     let URLNode = {
+      _id: { $oid: "" },
+      user_id: localStorage.getItem("user"),
       key: uuidv4(),
       label: URLlink,
       data: URLlink,

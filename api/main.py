@@ -158,14 +158,21 @@ def newFolder():
 
 @app.route('/addURL', methods=['POST'])
 def newURLLink():
+    # Get New URL node to be added
     newDoc = request.json['URLNode']
+    newDoc['_id'] = ObjectId()
+    newDoc['user_id'] = ObjectId(newDoc['user_id'])
+    # Fetch ParentNode selected in UI from DB
     parentDoc = mongo.db.bookmarks.find_one_or_404({"key": newDoc['parent']})
     parentDoc['children'].append(newDoc['key'])
     parentDoc['leaf'] = False
-    mongo.db.bookmarks.update_one(
-        {'key': parentDoc['key']}, {"$set": parentDoc})
+    # Modify URL node Label and insert into DB
     newDoc = linkObjUpdate(newDoc)
     mongo.db.bookmarks.insert_one(newDoc)
+    # Update ParentNode children array
+    mongo.db.bookmarks.update_one(
+        {'key': parentDoc['key']}, {"$set": parentDoc})
+
     return jsonify(status="urlAdded"), 200
 
 
