@@ -34,7 +34,9 @@ export class FolderStructureComponent implements OnInit {
     };
     this.bmarkService.getAllBookmarksObs(userBookmarkReqObj);
     this.bmarkService.bmarkerCollections$.subscribe((api_data) => {
-      this.folders = this.getFolderData(api_data);
+      // this.folders = this.getFolderData(api_data);
+      console.log(api_data);
+      this.folders = api_data;
     });
 
     // this.bmarkService
@@ -103,6 +105,9 @@ export class FolderStructureComponent implements OnInit {
         if (child.key.toLowerCase() === folderToFind.key.toLowerCase()) {
           if (action === "delete") {
             folderNode.children.splice(index, 1);
+            if (folderNode.children.length == 0) {
+              folderNode.leaf = true;
+            }
           } else if (action === "rename") {
             folderNode.children[index].label = <string>actionString;
           } else if (action === "add") {

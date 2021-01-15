@@ -23,18 +23,21 @@ app.config['MONGO_URI'] = 'mongodb://localhost:27017/bmarker'
 mongo = PyMongo(app)
 
 
-def recursiveNodeIter(node, action, *args, **kwargs):
-    # breakpoint()
-    i = 0
-    while i < len(node['children']):
+def recursiveNodeIter(node, action, itr=0, *args, **kwargs):
+    while itr >= 0:
         childNode = mongo.db.bookmarks.find_one_or_404(
             {
-                "key": node['children'][i],
+                "key": node['children'][itr],
                 "user_id": node['user_id']
             })
         if childNode['leaf'] == True:
             if action == 'fetch':
-                node['children'][i] = childNode
+                if childNode['feature'] == 'folder':
+                    node['children'][itr] = childNode
+                else:
+                    del node['children'][itr]
+                    if len(node['children']) == 0:
+                        node['leaf'] = True
             elif action == 'delete':
                 # Deleting the Leaf Node
                 mongo.db.bookmarks.delete_one(
@@ -42,20 +45,27 @@ def recursiveNodeIter(node, action, *args, **kwargs):
         else:
             itrChildnode = mongo.db.bookmarks.find_one_or_404(
                 {
-                    "key": node['children'][i],
+                    "key": node['children'][itr],
                     "user_id": node['user_id']
                 })
             if action == 'fetch':
-                node['children'][i] = recursiveNodeIter(itrChildnode, action)
+                if itrChildnode['feature'] == 'folder':
+                    node['children'][itr] = recursiveNodeIter(
+                        itrChildnode, action, itr=len(itrChildnode['children'])-1)
+                else:
+                    del node['children'][itr]
+                    if len(node['children']) == 0:
+                        node['leaf'] = True
             elif action == 'delete':
-                nodeToDel = recursiveNodeIter(itrChildnode, action)
+                nodeToDel = recursiveNodeIter(
+                    itrChildnode, action, itr=len(itrChildnode['children'])-1)
                 mongo.db.bookmarks.delete_one(
                     {
                         "key": nodeToDel['key'],
                         "user_id": node['user_id']
                     })
-
-        i += 1
+        # i += 1
+        itr -= 1
     return node
 
 
@@ -84,7 +94,7 @@ def signup():
             "feature": "folder",
             "children": [],
             "parent": "null",
-            "leaf": False
+            "leaf": True
         }
 
         bookmarkDoc = mongo.db.bookmarks.insert_one(bookmark)
@@ -125,7 +135,8 @@ def getBookmarkTree():
                 "user_id": ObjectId(userBmarkReqObj['user_id']),
                 "key": userBmarkReqObj['bookmark_key']
             })
-    recursiveNodeIter(bookmarkTree, 'fetch')
+    recursiveNodeIter(bookmarkTree, 'fetch',
+                      itr=len(bookmarkTree['children'])-1)
     # return jsonify({'data': [bookmarkTree]})
     return json.dumps({'data': [bookmarkTree]}, default=json_util.default)
 
@@ -211,7 +222,7 @@ def deleteFolder():
         })
     # Delete all children Nodes Recursively
     if(delDoc['leaf'] != True):
-        recursiveNodeIter(delDoc, 'delete')
+        recursiveNodeIter(delDoc, 'delete', itr=len(delDoc['children'])-1)
     # Delete Name in Parent Array
     parentNode = mongo.db.bookmarks.find_one_or_404(
         {
@@ -219,6 +230,8 @@ def deleteFolder():
             "user_id": ObjectId(userId)
         })
     parentNode['children'].remove(delDoc['key'])
+    if len(parentNode['children']) == 0:
+        parentNode['leaf'] = True
     mongo.db.bookmarks.update_one(
         {
             "_id": ObjectId(parentNode["_id"]),

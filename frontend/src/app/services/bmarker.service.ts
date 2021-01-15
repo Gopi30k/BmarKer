@@ -49,7 +49,17 @@ export class BmarkerService {
   getAllBookmarksObs(userBmarkObj) {
     this.http
       .post<Folder[]>("http://127.0.0.1:5000/", userBmarkObj)
-      .subscribe((data) => this.bmarkerCollections.next(data["data"]));
+      // .pipe(
+      //   map((d) =>
+      //     d["data"][0]["children"].filter((f) => f.feature == "folder")
+      //   ),
+      //   tap((api_data) => console.log(api_data))
+      // )
+      .subscribe((data) => {
+        console.log(data);
+        this.bmarkerCollections.next(data["data"]);
+        // this.bmarkerCollections.next(data);
+      });
 
     // [this.folderCollections$, this.urlLinkCollections$] = partition(
     //   this.bmarkerCollections,
