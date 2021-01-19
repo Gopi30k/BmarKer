@@ -16,9 +16,9 @@ import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { AngularFireDatabaseModule } from "@angular/fire/database";
 import { NavBarComponent } from "./nav-bar/nav-bar.component";
 import { AngularFontAwesomeModule } from "angular-font-awesome";
-import { BmarkerComponent } from './bmarker/bmarker.component';
-import { SignupComponent } from './signup/signup.component';
-import { LoginComponent } from './login/login.component';
+import { BmarkerComponent } from "./bmarker/bmarker.component";
+import { SignupComponent } from "./signup/signup.component";
+import { LoginComponent } from "./login/login.component";
 
 @NgModule({
   declarations: [
@@ -39,7 +39,7 @@ import { LoginComponent } from './login/login.component';
     MaterialModule,
     HttpClientModule,
     FormsModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig),
+    // AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
     AngularFireDatabaseModule,
     AngularFontAwesomeModule,

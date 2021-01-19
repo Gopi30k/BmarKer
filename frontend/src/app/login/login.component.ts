@@ -18,7 +18,8 @@ export class LoginComponent implements OnInit {
         console.log(response.body);
         let responseObj = response.body;
         localStorage.setItem("user", responseObj["user_id"]);
-        this.router.navigate(["bookmarks", responseObj["root_bookmark_key"]]);
+        // this.router.navigate(["bookmarks", responseObj["root_bookmark_key"]]);
+        this.router.navigate(["bookmarks"]);
       }
     });
   }

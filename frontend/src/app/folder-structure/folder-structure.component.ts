@@ -31,11 +31,12 @@ export class FolderStructureComponent implements OnInit {
     let userBookmarkReqObj = {
       user_id: localStorage.getItem("user"),
       bookmark_key: this.route.snapshot.paramMap.get("folder"),
+      b_type: "all",
     };
-    this.bmarkService.getAllBookmarksObs(userBookmarkReqObj);
-    this.bmarkService.bmarkerCollections$.subscribe((api_data) => {
+    this.bmarkService.getFolderOnlyObs(userBookmarkReqObj);
+    this.bmarkService.folderOnlyCollection$.subscribe((api_data) => {
       // this.folders = this.getFolderData(api_data);
-      console.log(api_data);
+      // console.log(api_data);
       this.folders = api_data;
     });
 
@@ -252,7 +253,11 @@ export class FolderStructureComponent implements OnInit {
   }
 
   refreshRoute(uri: string) {
-    this.router.navigate([uri], { skipLocationChange: true });
+    // this.router.navigate([uri], { skipLocationChange: true });
+    let currentUrl = this.router.url;
+    this.router.navigateByUrl("/", { skipLocationChange: true }).then(() => {
+      this.router.navigate([currentUrl]);
+    });
   }
 
   // Dialog Cancel button action
@@ -262,7 +267,7 @@ export class FolderStructureComponent implements OnInit {
 
   onFolderClick(event) {
     // console.log(event.node);
-    this.router.navigate(["/bookmarks", event.node.key]);
+    this.router.navigate(["/bookmarks", "folders", event.node.key]);
     // this.bmarkService.getFolderDependants(event.node.key);
   }
 }

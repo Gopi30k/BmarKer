@@ -15,14 +15,34 @@ const routes: Routes = [
     path: "login",
     component: LoginComponent,
   },
+  // {
+  //   path: "bookmarks/my-bookmarks",
+  //   component: BmarkerComponent,
+  // },
+  // {
+  //   path: "bookmarks/folders/:folder",
+  //   component: ViewBmarksPaneComponent,
+  // },
   {
-    path: "bookmarks/:folder",
+    path: "bookmarks",
     component: BmarkerComponent,
-  },
-  {
-    path: "",
-    component: ViewBmarksPaneComponent,
-    outlet: "view",
+    children: [
+      // {
+      //   path: "",
+      //   component: ViewBmarksPaneComponent,
+      // },
+      {
+        path: "folders/:folder",
+        component: ViewBmarksPaneComponent,
+      },
+      // {
+      //   path: "folders/:folder",
+      //   loadChildren: () =>
+      //     import("./test-route/test-route.module").then(
+      //       (m: any) => m.TestRouteModule
+      //     ),
+      // },
+    ],
   },
   // {
   //   path: "",
@@ -33,11 +53,13 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(routes, {
-      onSameUrlNavigation: "reload",
-    }),
-  ],
+  // imports: [
+  //   RouterModule.forRoot(routes, {
+  //     onSameUrlNavigation: "reload",
+  //   }),
+  // ],
+  imports: [RouterModule.forRoot(routes)],
+
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
