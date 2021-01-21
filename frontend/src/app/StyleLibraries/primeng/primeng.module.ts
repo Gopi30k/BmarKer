@@ -10,6 +10,8 @@ import { InputTextModule } from "primeng/inputtext";
 import { DynamicDialogModule } from "primeng/dynamicdialog";
 import { ToastModule } from "primeng/toast";
 import { CardModule } from "primeng/card";
+import { PasswordModule } from "primeng/password";
+import { TooltipModule } from "primeng/tooltip";
 
 export const primengComponents = [
   ButtonModule,
@@ -22,6 +24,8 @@ export const primengComponents = [
   DynamicDialogModule,
   ToastModule,
   CardModule,
+  PasswordModule,
+  TooltipModule,
 ];
 
 @NgModule({

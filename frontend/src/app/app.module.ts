@@ -6,7 +6,7 @@ import { AppComponent } from "./app.component";
 import { PrimengModule } from "./StyleLibraries/primeng/primeng.module";
 import { MaterialModule } from "./StyleLibraries/material/angular.material.module";
 import { HttpClientModule } from "@angular/common/http";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { FolderStructureComponent } from "./folder-structure/folder-structure.component";
 import { ViewBmarksPaneComponent } from "./view-bmarks-pane/view-bmarks-pane.component";
 import { SideNavComponent } from "./side-nav/side-nav.component";
@@ -39,12 +39,14 @@ import { LoginComponent } from "./login/login.component";
     MaterialModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     // AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
     AngularFireDatabaseModule,
     AngularFontAwesomeModule,
   ],
   providers: [],
+
   bootstrap: [AppComponent],
 })
 export class AppModule {}

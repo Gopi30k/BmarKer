@@ -3,7 +3,7 @@
     <h2>SIGN IN</h2>
     <p>to view your organized bookmarks</p>
   </div>
-  <form id="signin-form" #login="ngForm">
+  <form id="signin-form" [formGroup]="loginForm" (ngSubmit)="loginUser()">
     <div class="ui-fluid">
       <div class="p-field p-col-12 p-md-5">
         <label for="email">Email</label>
@@ -12,9 +12,27 @@
           type="email"
           name="email"
           autocomplete="off"
+          formControlName="email"
           pInputText
-          ngModel
         />
+        <span
+          class="text-danger"
+          *ngIf="
+            (loginFormControl.email.touched || submitted) &&
+            loginFormControl.email.errors?.required
+          "
+        >
+          Email is required
+        </span>
+        <span
+          class="text-danger"
+          *ngIf="
+            loginFormControl.email.touched &&
+            loginFormControl.email.errors?.email
+          "
+        >
+          Enter a valid email address
+        </span>
       </div>
       <div class="p-field p-col-12 p-md-5">
         <label for="password">Password</label>
@@ -22,18 +40,36 @@
           id="password"
           type="password"
           name="password"
+          formControlName="password"
           pInputText
-          ngModel
         />
+        <span
+          class="text-danger"
+          *ngIf="
+            (loginFormControl.password.touched || submitted) &&
+            loginFormControl.password.errors?.required
+          "
+        >
+          Password is required
+        </span>
+        <span
+          class="text-danger"
+          *ngIf="
+            loginFormControl.password.touched &&
+            loginFormControl.password.errors?.invalidPassword
+          "
+        >
+          Password should have minimum 8 characters, at least 1 uppercase
+          letter, 1 lowercase letter and 1 number
+        </span>
       </div>
     </div>
     <div class="signin-btn">
       <button
         pButton
-        type="button"
+        type="submit"
         label="Sign In"
         class="ui-button-raised"
-        (click)="loginUser(login.value)"
       ></button>
     </div>
   </form>

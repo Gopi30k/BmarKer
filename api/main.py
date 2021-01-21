@@ -1,5 +1,3 @@
-import bcrypt
-from os import error
 from dns import message
 from flask import Flask
 from flask import json
@@ -11,7 +9,13 @@ import requests
 from bs4 import BeautifulSoup as bs
 from bson.objectid import ObjectId
 from bson import json_util
+from flask_jwt_extended import (
+    JWTManager, jwt_required, create_access_token,
+    get_jwt_identity
+)
 import uuid
+import bcrypt
+import os
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -19,6 +23,10 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['DB_NAME'] = 'bmarker'
 app.config['MONGO_URI'] = 'mongodb://localhost:27017/bmarker'
 # app.config['MONGO_URI'] = 'mongodb+srv://admin:0admin0@bmarkercluster.iid44.mongodb.net/bmarker?retryWrites=true&w=majority'
+
+# Setup the Flask-JWT-Extended extension
+app.config['JWT_SECRET_KEY'] = str(os.urandom(16))
+jwt = JWTManager(app)
 
 mongo = PyMongo(app)
 
@@ -123,13 +131,17 @@ def login():
         return jsonify({'error': 'Account not found, Check your Email Address'}), 404
     elif not(bcrypt.checkpw(loginUserObj['password'].encode('utf-8'), userDoc['password'])):
         return jsonify({'error': 'Invalid Password'}), 404
-    return json.dumps({
-        'user_id': str(userDoc['_id']),
-        'root_bookmark_key': str(userDoc['root_bookmark_key']),
-    }, default=json_util.default), 200
+    else:
+        access_token = create_access_token(identity=str(userDoc['_id']))
+        return json.dumps({
+            'user_id': str(userDoc['_id']),
+            'root_bookmark_key': str(userDoc['root_bookmark_key']),
+            'token': access_token
+        }, default=json_util.default), 200
 
 
 @app.route('/', methods=['POST', 'GET'])
+@jwt_required
 def getBookmarkTree():
     bookmarkTree = None
     if request.method == 'POST':
@@ -142,6 +154,8 @@ def getBookmarkTree():
     recursiveNodeIter(bookmarkTree, 'fetch', b_type=userBmarkReqObj['b_type'],
                       itr=len(bookmarkTree['children'])-1)
     # return jsonify({'data': [bookmarkTree]})
+    current_user = get_jwt_identity()
+    print(current_user)
     return json.dumps({'data': [bookmarkTree]}, default=json_util.default)
 
 
