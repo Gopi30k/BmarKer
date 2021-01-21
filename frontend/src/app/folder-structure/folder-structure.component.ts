@@ -29,7 +29,7 @@ export class FolderStructureComponent implements OnInit {
   ) {}
   ngOnInit() {
     let userBookmarkReqObj = {
-      user_id: localStorage.getItem("user"),
+      // token: localStorage.getItem("bmarkerToken"),
       bookmark_key: this.route.snapshot.paramMap.get("folder"),
       b_type: "all",
     };
@@ -151,7 +151,7 @@ export class FolderStructureComponent implements OnInit {
 
   deleteFolder(folderToDelete: Folder) {
     this.bmarkService
-      .deleteBmarkFolder(folderToDelete.key, localStorage.getItem("user"))
+      .deleteBmarkFolder(folderToDelete.key)
       .subscribe((response) => {
         console.log(
           `API responded on Folder Deletion - ${JSON.stringify(response)}`
@@ -184,11 +184,7 @@ export class FolderStructureComponent implements OnInit {
       };
 
       this.bmarkService
-        .renameBmarkFolder(
-          this.selectedFolder.key,
-          localStorage.getItem("user"),
-          renameFolder
-        )
+        .renameBmarkFolder(this.selectedFolder.key, renameFolder)
         .subscribe((response) => {
           console.log(
             `API responded on Folder Rename - ${JSON.stringify(response)}`

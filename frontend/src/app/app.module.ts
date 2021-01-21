@@ -5,7 +5,7 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { PrimengModule } from "./StyleLibraries/primeng/primeng.module";
 import { MaterialModule } from "./StyleLibraries/material/angular.material.module";
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { FolderStructureComponent } from "./folder-structure/folder-structure.component";
 import { ViewBmarksPaneComponent } from "./view-bmarks-pane/view-bmarks-pane.component";
@@ -19,6 +19,8 @@ import { AngularFontAwesomeModule } from "angular-font-awesome";
 import { BmarkerComponent } from "./bmarker/bmarker.component";
 import { SignupComponent } from "./signup/signup.component";
 import { LoginComponent } from "./login/login.component";
+import { BmarkerAuthGuard } from "./guards/bmarker-auth.guard";
+import { HttpCallInterceptorService } from "./services/http-call-interceptor.service";
 
 @NgModule({
   declarations: [
@@ -45,7 +47,14 @@ import { LoginComponent } from "./login/login.component";
     AngularFireDatabaseModule,
     AngularFontAwesomeModule,
   ],
-  providers: [],
+  providers: [
+    BmarkerAuthGuard,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpCallInterceptorService,
+      multi: true,
+    },
+  ],
 
   bootstrap: [AppComponent],
 })

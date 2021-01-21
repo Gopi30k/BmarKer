@@ -103,7 +103,7 @@ export class BmarkerService {
     if (key !== null) {
       return this.http
         .post<Folder[]>("http://127.0.0.1:5000/", {
-          user_id: localStorage.getItem("user"),
+          // user_id: localStorage.getItem("user"),
           bookmark_key: key,
           b_type: "all",
         })
@@ -151,22 +151,16 @@ export class BmarkerService {
     });
   }
 
-  renameBmarkFolder(
-    folderToRenameKey: string,
-    user: string,
-    renameFolder: Folder
-  ) {
+  renameBmarkFolder(folderToRenameKey: string, renameFolder: Folder) {
     return this.http.post<Folder>("http://127.0.0.1:5000/renameFolder", {
       key: folderToRenameKey,
-      user,
       renameFolder,
     });
   }
 
-  deleteBmarkFolder(folderToDelKey: string, user: string) {
+  deleteBmarkFolder(folderToDelKey: string) {
     return this.http.post<Folder>("http://127.0.0.1:5000/deleteFolder", {
       key: folderToDelKey,
-      user,
     });
   }
 

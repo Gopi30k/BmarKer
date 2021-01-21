@@ -85,8 +85,8 @@ def signup():
     userObj = request.json['signup']
     user = {
         "_id": ObjectId(),
-        "fname": userObj['fname'],
-        "lname": userObj['lname'],
+        "firstName": userObj['firstName'],
+        "lastName": userObj['lastName'],
         "email": userObj['email'],
         "password": bcrypt.hashpw(userObj['password'].encode('utf-8'), bcrypt.gensalt()),
         "root_bookmark_key": str(uuid.uuid4())
@@ -133,38 +133,48 @@ def login():
         return jsonify({'error': 'Invalid Password'}), 404
     else:
         access_token = create_access_token(identity=str(userDoc['_id']))
-        return json.dumps({
+        # return json.dumps({
+        #     'user_id': str(userDoc['_id']),
+        #     'root_bookmark_key': str(userDoc['root_bookmark_key']),
+        #     'token': access_token
+        # }, default=json_util.default), 200
+        return jsonify({
             'user_id': str(userDoc['_id']),
             'root_bookmark_key': str(userDoc['root_bookmark_key']),
             'token': access_token
-        }, default=json_util.default), 200
+        }),  200
 
 
 @app.route('/', methods=['POST', 'GET'])
 @jwt_required
 def getBookmarkTree():
+    # breakpoint()
     bookmarkTree = None
     if request.method == 'POST':
         userBmarkReqObj = request.json
+        current_user = get_jwt_identity()
+        print(userBmarkReqObj)
         bookmarkTree = mongo.db.bookmarks.find_one(
             {
-                "user_id": ObjectId(userBmarkReqObj['user_id']),
+                # "user_id": ObjectId(userBmarkReqObj['user_id']),
+                "user_id": ObjectId(current_user),
                 "key": "my-bookmarks" if "bookmark_key" in userBmarkReqObj and userBmarkReqObj['bookmark_key'] is None else userBmarkReqObj['bookmark_key']
             })
-    recursiveNodeIter(bookmarkTree, 'fetch', b_type=userBmarkReqObj['b_type'],
-                      itr=len(bookmarkTree['children'])-1)
+        recursiveNodeIter(bookmarkTree, 'fetch', b_type=userBmarkReqObj['b_type'],
+                          itr=len(bookmarkTree['children'])-1)
     # return jsonify({'data': [bookmarkTree]})
-    current_user = get_jwt_identity()
-    print(current_user)
-    return json.dumps({'data': [bookmarkTree]}, default=json_util.default)
+
+        return json.dumps({'data': [bookmarkTree]}, default=json_util.default)
 
 
 @app.route('/addFolder', methods=['POST'])
+@jwt_required
 def newFolder():
     # Get New folder from request
     newDoc = request.json['folder']
     newDoc['_id'] = ObjectId()
-    newDoc['user_id'] = ObjectId(newDoc['user_id'])
+    # newDoc['user_id'] = ObjectId(newDoc['user_id'])
+    newDoc['user_id'] = ObjectId(get_jwt_identity())
     # Inserting new Folder Node in DB
     mongo.db.bookmarks.insert_one(newDoc)
     # Fetch parent of new Node to be added
@@ -186,11 +196,13 @@ def newFolder():
 
 
 @app.route('/addURL', methods=['POST'])
+@jwt_required
 def newURLLink():
     # Get New URL node to be added
     newDoc = request.json['URLNode']
     newDoc['_id'] = ObjectId()
-    newDoc['user_id'] = ObjectId(newDoc['user_id'])
+    # newDoc['user_id'] = ObjectId(newDoc['user_id'])
+    newDoc['user_id'] = ObjectId(get_jwt_identity())
     # Fetch ParentNode selected in UI from DB
     parentDoc = mongo.db.bookmarks.find_one_or_404({"key": newDoc['parent']})
     parentDoc['children'].append(newDoc['key'])
@@ -206,15 +218,16 @@ def newURLLink():
 
 
 @app.route('/renameFolder', methods=['POST'])
+@jwt_required
 def renameFolder():
     # Fetch rename Folder key & user from Request
     folderToRenameKey = request.json['key']
-    userId = request.json['user']
+    userId = ObjectId(get_jwt_identity())
     renameFolder = request.json['renameFolder']
     docToRename = mongo.db.bookmarks.find_one_or_404(
         {
             "key": folderToRenameKey,
-            "user_id": ObjectId(userId)
+            "user_id": userId
         })
 
     # Rename the Current Folder Node fields
@@ -223,20 +236,21 @@ def renameFolder():
     mongo.db.bookmarks.update_one(
         {
             "key": folderToRenameKey,
-            "user_id": ObjectId(userId),
+            "user_id": userId,
         }, {"$set": docToRename})
     return jsonify(status="renamed"), 200
 
 
 @app.route('/deleteFolder', methods=['POST'])
+@jwt_required
 def deleteFolder():
     folderToDelKey = request.json['key']
-    userId = request.json['user']
+    userId = ObjectId(get_jwt_identity())
     # Find node to be deleted
     delDoc = mongo.db.bookmarks.find_one_or_404(
         {
             "key": folderToDelKey,
-            "user_id": ObjectId(userId)
+            "user_id": userId
         })
     # Delete all children Nodes Recursively
     if(delDoc['leaf'] != True):
@@ -246,7 +260,7 @@ def deleteFolder():
     parentNode = mongo.db.bookmarks.find_one_or_404(
         {
             "key": delDoc['parent'],
-            "user_id": ObjectId(userId)
+            "user_id": userId
         })
     parentNode['children'].remove(delDoc['key'])
     if len(parentNode['children']) == 0:
@@ -255,14 +269,14 @@ def deleteFolder():
         {
             "_id": ObjectId(parentNode["_id"]),
             "key": delDoc['parent'],
-            "user_id": ObjectId(userId)
+            "user_id": userId
         }, {"$set": parentNode})
 
     # Delete the Current Node
     mongo.db.bookmarks.delete_one({
         "_id": ObjectId(delDoc["_id"]),
         "key": delDoc["key"],
-        "user_id": ObjectId(userId)
+        "user_id": userId
     })
     return jsonify(status="deleted"), 200
 

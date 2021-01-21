@@ -10,6 +10,7 @@ import { CustomFormValidationService } from "../services/custom-form-validation.
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
+  submitted: boolean = false;
   constructor(
     private bmarkerService: BmarkerService,
     private router: Router,
@@ -43,12 +44,13 @@ export class LoginComponent implements OnInit {
   }
 
   loginUser() {
+    this.submitted = true;
     const loginFormValue = this.loginForm.value;
     this.bmarkerService.loginUser(loginFormValue).subscribe((response) => {
       if (response.ok) {
         console.log(response.body);
         let responseObj = response.body;
-        localStorage.setItem("user", responseObj["user_id"]);
+        localStorage.setItem("bmarkerToken", responseObj["token"]);
         // this.router.navigate(["bookmarks", responseObj["root_bookmark_key"]]);
         this.router.navigate(["bookmarks"]);
       }

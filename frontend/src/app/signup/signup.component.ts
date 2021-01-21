@@ -1,6 +1,5 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { User } from "../models";
 import { BmarkerService } from "../services/bmarker.service";
 import { Validators, FormGroup, FormBuilder } from "@angular/forms";
 import { CustomFormValidationService } from "../services/custom-form-validation.service";
@@ -11,6 +10,7 @@ import { CustomFormValidationService } from "../services/custom-form-validation.
 })
 export class SignupComponent implements OnInit {
   signupForm: FormGroup;
+  submitted: boolean = false;
   constructor(
     private bmarkerService: BmarkerService,
     private router: Router,
@@ -47,6 +47,7 @@ export class SignupComponent implements OnInit {
   }
 
   signupUser() {
+    this.submitted = true;
     if (this.signupForm.valid) {
       const formValue = this.signupForm.value;
       delete formValue.confirmPassword;
