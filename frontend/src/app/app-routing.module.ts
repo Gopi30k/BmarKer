@@ -46,12 +46,16 @@ const routes: Routes = [
     ],
     canActivate: [BmarkerAuthGuard],
   },
-  // {
-  //   path: "",
-  //   redirectTo: "/bookmarks/my_bookmarks",
-  //   pathMatch: "full",
-  // },
-  // { path: "**", redirectTo: "/bookmarks/my_bookmarks", pathMatch: "full" },
+  {
+    path: "",
+    redirectTo: "/bookmarks/folders/my-bookmarks",
+    pathMatch: "full",
+  },
+  {
+    path: "**",
+    redirectTo: "/bookmarks/folders/my-bookmarks",
+    pathMatch: "full",
+  },
 ];
 
 @NgModule({

@@ -3,10 +3,12 @@ import { Router } from "@angular/router";
 import { BmarkerService } from "../services/bmarker.service";
 import { Validators, FormGroup, FormBuilder } from "@angular/forms";
 import { CustomFormValidationService } from "../services/custom-form-validation.service";
+import { MessageService } from "primeng/api";
 @Component({
   selector: "app-signup",
   templateUrl: "./signup.component.html",
   styleUrls: ["./signup.component.scss"],
+  providers: [MessageService],
 })
 export class SignupComponent implements OnInit {
   signupForm: FormGroup;
@@ -15,7 +17,8 @@ export class SignupComponent implements OnInit {
     private bmarkerService: BmarkerService,
     private router: Router,
     private fb: FormBuilder,
-    private customValidator: CustomFormValidationService
+    private customValidator: CustomFormValidationService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit() {
@@ -53,11 +56,20 @@ export class SignupComponent implements OnInit {
       delete formValue.confirmPassword;
       console.table(formValue);
 
-      this.bmarkerService.signupUser(formValue).subscribe((response) => {
-        if (response.ok) {
-          this.router.navigate(["login"]);
+      this.bmarkerService.signupUser(formValue).subscribe(
+        (response) => {
+          if (response.ok) {
+            this.router.navigate(["login"]);
+          }
+        },
+        (err) => {
+          this.messageService.add({
+            severity: "error",
+            summary: "Error",
+            detail: err.error,
+          });
         }
-      });
+      );
     }
   }
 }

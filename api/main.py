@@ -113,7 +113,7 @@ def signup():
         bookmarkDoc = mongo.db.bookmarks.insert_one(bookmark)
         return jsonify(message="userAdded"), 200
     else:
-        return "EmailId already exists", 400
+        return jsonify(error="EmailId already exists"), 400
     #     return jsonify({'message': 'userAdded'}), 200
     # else:
     #     return jsonify({'error': 'EmailId already exists'}), 400
@@ -123,13 +123,14 @@ def signup():
 def login():
     loginUserObj = request.json['login']
     userDoc = mongo.db.user.find_one({"email": loginUserObj['email']})
-    bookmarkDoc = mongo.db.bookmarks.find_one({
-        "key": userDoc['root_bookmark_key'],
-        "user_id": userDoc['_id']
-    })
+
     if not(userDoc):
-        return jsonify({'error': 'Account not found, Check your Email Address'}), 404
-    elif not(bcrypt.checkpw(loginUserObj['password'].encode('utf-8'), userDoc['password'])):
+        return jsonify({'error': 'Invalid Email Address'}), 404
+    # bookmarkDoc = mongo.db.bookmarks.find_one({
+    #     "key": userDoc['root_bookmark_key'],
+    #     "user_id": userDoc['_id']
+    # })
+    if not(bcrypt.checkpw(loginUserObj['password'].encode('utf-8'), userDoc['password'])):
         return jsonify({'error': 'Invalid Password'}), 404
     else:
         access_token = create_access_token(
