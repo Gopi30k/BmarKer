@@ -12,6 +12,7 @@ import { ToastModule } from "primeng/toast";
 import { CardModule } from "primeng/card";
 import { PasswordModule } from "primeng/password";
 import { TooltipModule } from "primeng/tooltip";
+import { OverlayPanelModule } from "primeng/overlaypanel";
 
 export const primengComponents = [
   ButtonModule,
@@ -26,6 +27,7 @@ export const primengComponents = [
   CardModule,
   PasswordModule,
   TooltipModule,
+  OverlayPanelModule,
 ];
 
 @NgModule({

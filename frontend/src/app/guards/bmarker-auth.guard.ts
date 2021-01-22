@@ -9,7 +9,7 @@ import { AuthService } from "../services/auth.service";
 export class BmarkerAuthGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
   canActivate(): boolean {
-    if (this.authService.loggedIn()) {
+    if (this.authService.isUserLoggedIn()) {
       return true;
     } else {
       this.router.navigate(["login"]);

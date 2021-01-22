@@ -82,7 +82,17 @@ export class SideNavComponent implements OnInit {
         `API responded on Folder addition - ${JSON.stringify(response)}`
       );
       if (response["status"] === "urlAdded") {
-        this.router.navigate([decodeURI(this.location.path())]);
+        // this.router.navigate([decodeURI(this.location.path())]);
+
+        this.router.navigate([decodeURI(this.location.path())], {
+          skipLocationChange: true,
+        });
+
+        // this.router
+        //   .navigateByUrl("/", { skipLocationChange: true })
+        //   .then(() => {
+        //     this.router.navigate([this.router.url]);
+        //   });
       }
     });
   }

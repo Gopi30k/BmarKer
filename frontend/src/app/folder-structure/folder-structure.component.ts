@@ -31,7 +31,7 @@ export class FolderStructureComponent implements OnInit {
     let userBookmarkReqObj = {
       // token: localStorage.getItem("bmarkerToken"),
       bookmark_key: this.route.snapshot.paramMap.get("folder"),
-      b_type: "all",
+      b_type: "folders",
     };
     this.bmarkService.getFolderOnlyObs(userBookmarkReqObj);
     this.bmarkService.folderOnlyCollection$.subscribe((api_data) => {

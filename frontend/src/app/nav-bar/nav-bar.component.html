@@ -1,8 +1,29 @@
 <div class="nav-bar">
-  <h1 style="color: #1c558e" [routerLink]="['/']">Bmarker</h1>
+  <h1 style="color: #007ad9" [routerLink]="['/']">Bmarker</h1>
   <div class="search-bookmarks">
     <!-- <fa name="search"></fa> -->
     <!-- <input type="text" name="Search" id="search-bookmark" /> -->
   </div>
-  <fa name="user-circle" size="2x" id="account-icon"></fa>
+  <!-- <fa name="user-circle" size="2x" id="account-icon"></fa> -->
+  <div class="account-settings">
+    <p-overlayPanel #op>
+      <ng-template pTemplate>
+        <button
+          pButton
+          type="button"
+          label="Logout"
+          (click)="authService.logOutUser(op)"
+        ></button>
+      </ng-template>
+    </p-overlayPanel>
+
+    <button
+      type="text"
+      *ngIf="authService.isUserLoggedIn()"
+      label="G"
+      (click)="op.toggle($event)"
+      pButton
+    ></button>
+    <div #actualTarget></div>
+  </div>
 </div>

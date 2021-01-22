@@ -132,7 +132,8 @@ def login():
     elif not(bcrypt.checkpw(loginUserObj['password'].encode('utf-8'), userDoc['password'])):
         return jsonify({'error': 'Invalid Password'}), 404
     else:
-        access_token = create_access_token(identity=str(userDoc['_id']))
+        access_token = create_access_token(
+            identity=str(userDoc['_id']), expires_delta=False)
         # return json.dumps({
         #     'user_id': str(userDoc['_id']),
         #     'root_bookmark_key': str(userDoc['root_bookmark_key']),
