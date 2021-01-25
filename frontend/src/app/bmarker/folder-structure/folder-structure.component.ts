@@ -31,15 +31,18 @@ export class FolderStructureComponent implements OnInit {
     let userBookmarkReqObj = {
       // token: localStorage.getItem("bmarkerToken"),
       bookmark_key: this.route.snapshot.paramMap.get("folder"),
-      b_type: "folders",
+      b_type: "all",
     };
     this.bmarkService.getFolderOnlyObs(userBookmarkReqObj);
     this.bmarkService.folderOnlyCollection$.subscribe((api_data) => {
       // this.folders = this.getFolderData(api_data);
-      // console.log(api_data);
+      console.log(api_data);
       this.folders = api_data;
     });
 
+    console.log(this.folders);
+
+    // this.onFolderClick(this.folders);
     // this.bmarkService
     //   .getAllBookmarks()
     //   .subscribe((api_data) => (this.folders = this.getFolderData(api_data)));
@@ -159,7 +162,8 @@ export class FolderStructureComponent implements OnInit {
 
         if (response["status"] === "deleted") {
           this.nodeRecursiveAction(this.folders[0], folderToDelete, "delete");
-          this.refreshRoute(decodeURI(this.location.path()));
+          // this.refreshRoute(decodeURI(this.location.path()));
+          this.onFolderClick(this.selectedFolder.parent);
         } else {
           // TODO : Throw Popup Error (not deleted)
         }
@@ -196,11 +200,13 @@ export class FolderStructureComponent implements OnInit {
               "rename",
               renameString
             );
+
+            this.onFolderClick(this.selectedFolder.parent);
           } else {
             // TODO: Throw Popup error (Rename not done)
           }
         });
-      this.refreshRoute(decodeURI(this.location.path()));
+      // this.refreshRoute(decodeURI(this.location.path()));
     } else if (this.footerSuccessBtn.toLowerCase() === "add") {
       let newFolderNode = {
         _id: { $oid: "" },
@@ -239,7 +245,9 @@ export class FolderStructureComponent implements OnInit {
                 );
               }
             });
-            this.refreshRoute(decodeURI(this.location.path()));
+            // this.refreshRoute(decodeURI(this.location.path()));
+
+            this.onFolderClick(this.selectedFolder);
           } else {
             // TODO: Throw Popup Error (folder not added)
           }
@@ -251,6 +259,8 @@ export class FolderStructureComponent implements OnInit {
   refreshRoute(uri: string) {
     // this.router.navigate([uri], { skipLocationChange: true });
     let currentUrl = this.router.url;
+    // console.log(currentUrl);
+
     this.router.navigateByUrl("/", { skipLocationChange: true }).then(() => {
       this.router.navigate([currentUrl]);
     });
@@ -262,8 +272,22 @@ export class FolderStructureComponent implements OnInit {
   }
 
   onFolderClick(event) {
-    // console.log(event.node);
-    this.router.navigate(["/bookmarks", "folders", event.node.key]);
+    // console.log("originalEvent" in event);
+
+    // if ("originalEvent" in event) {
+    //   event = event.node.children;
+    // } else {
+    //   event = event.children;
+    // }
+    // this.getFolderData(event.node.child)
+
+    const navArray =
+      "originalEvent" in event ? event.node.children : event.children;
+    this.bmarkService.setCurrentBmarkChildren(navArray);
+    // this.router.navigate(["/bookmarks", "folders", event.node.key]);
+    // this.router.navigate(["/bookmarks", event.node.key], {
+    //   state: { child: event.node.children },
+    // });
     // this.bmarkService.getFolderDependants(event.node.key);
   }
 }

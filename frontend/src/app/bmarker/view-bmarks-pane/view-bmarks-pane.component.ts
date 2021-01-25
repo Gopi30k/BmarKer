@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { TreeNode } from "primeng/api";
 import { Observable, Subject } from "rxjs";
+import { map } from "rxjs/operators";
 import { BmarkerService } from "../../services/bmarker.service";
 
 @Component({
@@ -31,34 +32,39 @@ export class ViewBmarksPaneComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.paramMap.subscribe((params) => {
-      this.folders = [];
-      this.links = [];
-      this.bmarkService
-        .getFolderSubCollections(params.get("folder"))
-        .subscribe((data) => {
-          data[0].children.forEach((d) => {
-            d.feature === "folder" ? this.folders.push(d) : this.links.push(d);
-          });
-        });
-    });
+    this.bmarkService.bkFolderCollection$.subscribe((d) => (this.folders = d));
+    this.bmarkService.bkURLLinkCollection$.subscribe((d) => (this.links = d));
 
+    // this.bmarkService.commonCollection$.subscribe((data) =>
+    //   data.forEach((d) => {
+    //     console.log(d);
+    //     d.feature === "folder" ? this.folders.push(d) : this.links.push(d);
+    //   })
+    // );
+    // this.route.paramMap.subscribe((params) => {
+    //   this.folders = [];
+    //   this.links = [];
+    //   this.bmarkService
+    //     .getFolderSubCollections(params.get("folder"))
+    //     .subscribe((data) => {
+    //       data[0].children.forEach((d) => {
+    //         d.feature === "folder" ? this.folders.push(d) : this.links.push(d);
+    //       });
+    //     });
+    // });
     // this.route.paramMap.subscribe((params) => {
     //   this.bmarkService.getSubCollectionOfFolderObs(params.get("folder"));
     // });
-
     // this.bmarkService.commonCollection$
     //   // .pipe(tap(({ ...data }) => console.log(data)))
     //   .subscribe((data) => {
     //     // console.log(data["data"][0]);
-
     //     data["data"][0].children.forEach((d) => {
     //       d.feature === "folder"
     //         ? this.bkFolderCollection.next(d)
     //         : this.bkURLLinkCollection.next(d);
     //     });
     //   });
-
     // this.bmarkService.commonCollection$.subscribe((d) => console.log(d));
     // this.bmarkService.bkFolderCollection$.subscribe((d) => console.log(d));
     // this.bkURLLinkCollection$.subscribe((d) => console.log(d));

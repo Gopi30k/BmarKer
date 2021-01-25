@@ -51,11 +51,12 @@ const routes: Routes = [
     path: "bookmarks",
     loadChildren: () =>
       import("./bmarker/bmarker.module").then((m) => m.BmarkerModule),
+    canActivate: [BmarkerAuthGuard],
   },
 
   {
     path: "",
-    redirectTo: "/bookmarks",
+    redirectTo: "bookmarks",
     pathMatch: "full",
   },
   {

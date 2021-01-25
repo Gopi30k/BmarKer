@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
           let responseObj = response.body;
           localStorage.setItem("bmarkerToken", responseObj["token"]);
           // this.router.navigate(["bookmarks", responseObj["root_bookmark_key"]]);
-          this.router.navigate(["bookmarks/folders/my-bookmarks"]);
+          this.router.navigate(["bookmarks"]);
         } else {
           console.log(response);
         }

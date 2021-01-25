@@ -7,27 +7,41 @@ import { BookmarkPaneComponent } from "./bookmark-pane/bookmark-pane.component";
 
 const routes: Routes = [
   {
-    path: "",
+    path: "folders",
     component: BookmarkPaneComponent,
     children: [
       {
+        path: ":folder",
+        component: ViewBmarksPaneComponent,
+      },
+      {
         path: "",
-        component: SideNavComponent,
-        children: [
-          {
-            path: ":folder",
-            component: ViewBmarksPaneComponent,
-          },
-          {
-            path: "",
-            redirectTo: "my-bookmarks",
-            pathMatch: "full",
-          },
-        ],
+        redirectTo: "my-bookmarks",
       },
     ],
   },
+  {
+    path: "",
+    redirectTo: "folders",
+  },
 ];
+
+// const routes: Routes = [
+//   {
+//     path: "folders",
+//     component: SideNavComponent,
+//     children: [
+//       {
+//         path: ":folder",
+//         component: ViewBmarksPaneComponent,
+//       },
+//     ],
+//   },
+//   {
+//     path: "",
+//     redirectTo: "folders",
+//   },
+// ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

@@ -25,11 +25,11 @@ export class BmarkerService {
   private commonCollection: Subject<any> = new Subject<any>();
   commonCollection$: Observable<any> = this.commonCollection.asObservable();
 
-  // private bkFolderCollection: Subject<any> = new Subject<any>();
-  // bkFolderCollection$: Observable<any> = this.bkFolderCollection.asObservable();
+  private bkFolderCollection: Subject<any> = new Subject<any>();
+  bkFolderCollection$: Observable<any> = this.bkFolderCollection.asObservable();
 
-  // private bkURLLinkCollection: Subject<any> = new Subject<any>();
-  // bkURLLinkCollection$: Observable<any> = this.bkURLLinkCollection.asObservable();
+  private bkURLLinkCollection: Subject<any> = new Subject<any>();
+  bkURLLinkCollection$: Observable<any> = this.bkURLLinkCollection.asObservable();
   constructor(private http: HttpClient) {}
 
   signupUser(userData: Object) {
@@ -117,37 +117,54 @@ export class BmarkerService {
     }
   }
 
-  getSubCollectionOfFolderObs(key: string) {
-    if (key !== null) {
-      this.http
-        .post<Folder[]>("http://127.0.0.1:5000/", {
-          user_id: localStorage.getItem("user"),
-          bookmark_key: key,
-          b_type: "all",
-        })
-        .subscribe((data) => this.commonCollection.next(data));
-    }
+  // getSubCollectionOfFolderObs(key: string) {
+  //   if (key !== null) {
+  //     this.http
+  //       .post<Folder[]>("http://127.0.0.1:5000/", {
+  //         user_id: localStorage.getItem("user"),
+  //         bookmark_key: key,
+  //         b_type: "all",
+  //       })
+  //       .subscribe((data) => this.commonCollection.next(data));
+  //   }
 
-    // this.commonCollection$.subscribe((d) => console.log(d));
+  // this.commonCollection$.subscribe((d) => console.log(d));
 
-    // this.folderOnlyCollections$.pipe(tap((data) => console.log(data)));
+  // this.folderOnlyCollections$.pipe(tap((data) => console.log(data)));
 
-    // this.commonCollection$
-    //   // .pipe(tap(({ ...data }) => console.log(data)))
-    //   .subscribe((data) => {
-    //     // console.log(data["data"][0]);
+  // this.commonCollection$
+  //   // .pipe(tap(({ ...data }) => console.log(data)))
+  //   .subscribe((data) => {
+  //     // console.log(data["data"][0]);
 
-    //     data["data"][0].children.forEach((d) => {
-    //       d.feature === "folder"
-    //         ? this.bkFolderCollection.next(d)
-    //         : this.bkURLLinkCollection.next(d);
-    //     });
-    //   });
+  //     data["data"][0].children.forEach((d) => {
+  //       d.feature === "folder"
+  //         ? this.bkFolderCollection.next(d)
+  //         : this.bkURLLinkCollection.next(d);
+  //     });
+  //   });
 
-    // [
-    //   this.bkFolderCollection$,
-    //   this.bkURLLinkCollection$,
-    // ] = this.commonCollection.pipe(partition((d) => d.feature === "folder"));
+  // [
+  //   this.bkFolderCollection$,
+  //   this.bkURLLinkCollection$,
+  // ] = this.commonCollection.pipe(partition((d) => d.feature === "folder"));
+  // }
+
+  setCurrentBmarkChildren(obj: Folder[]) {
+    console.log(obj);
+
+    // this.commonCollection.next(obj);
+    let folders = [];
+    let links = [];
+
+    obj.forEach((element) => {
+      element.feature === "folder"
+        ? folders.push(element)
+        : links.push(element);
+    });
+
+    this.bkFolderCollection.next(folders);
+    this.bkURLLinkCollection.next(links);
   }
 
   addNewBmarkFolder(newFolder: Folder) {
