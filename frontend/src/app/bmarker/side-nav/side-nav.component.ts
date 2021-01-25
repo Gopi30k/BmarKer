@@ -6,7 +6,7 @@ import { MessageService } from "primeng/api";
 import { Router } from "@angular/router";
 import { v4 as uuidv4 } from "uuid";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { BmarkerService } from "../services/bmarker.service";
+import { BmarkerService } from "../../services/bmarker.service";
 
 @Component({
   selector: "app-side-nav",

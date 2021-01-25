@@ -3,8 +3,8 @@ import { Location } from "@angular/common";
 import { MenuItem, TreeDragDropService } from "primeng/api";
 import { Router } from "@angular/router";
 import { v4 as uuidv4 } from "uuid";
-import { Folder } from "../models";
-import { BmarkerService } from "../services/bmarker.service";
+import { Folder } from "../../models";
+import { BmarkerService } from "../../services/bmarker.service";
 import { ActivatedRoute } from "@angular/router";
 @Component({
   selector: "app-folder-structure",

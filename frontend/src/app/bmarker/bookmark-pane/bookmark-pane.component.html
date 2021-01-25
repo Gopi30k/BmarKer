@@ -1,0 +1,17 @@
+<div id="body-container">
+  <mat-sidenav-container class="bmaker-container">
+    <mat-sidenav
+      #sidenav
+      mode="side"
+      opened
+      class="bmarker-sidenav"
+      [fixedInViewport]="true"
+      [fixedTopGap]="50"
+    >
+      <router-outlet></router-outlet>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

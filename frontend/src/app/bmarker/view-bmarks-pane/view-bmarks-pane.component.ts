@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { TreeNode } from "primeng/api";
 import { Observable, Subject } from "rxjs";
-import { BmarkerService } from "../services/bmarker.service";
+import { BmarkerService } from "../../services/bmarker.service";
 
 @Component({
   selector: "app-view-bmarks-pane",
