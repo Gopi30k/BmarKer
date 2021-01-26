@@ -155,7 +155,6 @@ def getBookmarkTree():
     if request.method == 'POST':
         userBmarkReqObj = request.json
         current_user = get_jwt_identity()
-        print(userBmarkReqObj)
         bookmarkTree = mongo.db.bookmarks.find_one(
             {
                 # "user_id": ObjectId(userBmarkReqObj['user_id']),
@@ -165,7 +164,6 @@ def getBookmarkTree():
         recursiveNodeIter(bookmarkTree, 'fetch', b_type=userBmarkReqObj['b_type'],
                           itr=len(bookmarkTree['children'])-1)
     # return jsonify({'data': [bookmarkTree]})
-
         return json.dumps({'data': [bookmarkTree]}, default=json_util.default)
 
 
@@ -216,7 +214,12 @@ def newURLLink():
     mongo.db.bookmarks.update_one(
         {'key': parentDoc['key']}, {"$set": parentDoc})
 
+    # Get Siblings of inserted URL node
+    # recursiveNodeIter(parentDoc, 'fetch',
+    #                   b_type='all', itr=len(parentDoc['children'])-1)
+
     return jsonify(status="urlAdded"), 200
+    # return json.dumps({'status': "urlAdded", 'siblings': [parentDoc]}, default=json_util.default)
 
 
 @app.route('/renameFolder', methods=['POST'])
@@ -256,7 +259,7 @@ def deleteFolder():
         })
     # Delete all children Nodes Recursively
     if(delDoc['leaf'] != True):
-        recursiveNodeIter(delDoc, 'delete', b_type=delDoc['b_type'], itr=len(
+        recursiveNodeIter(delDoc, 'delete', b_type="all", itr=len(
             delDoc['children'])-1)
     # Delete Name in Parent Array
     parentNode = mongo.db.bookmarks.find_one_or_404(

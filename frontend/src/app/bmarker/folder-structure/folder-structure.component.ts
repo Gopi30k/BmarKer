@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit, SimpleChanges } from "@angular/core";
 import { Location } from "@angular/common";
 import { MenuItem, TreeDragDropService } from "primeng/api";
 import { Router } from "@angular/router";
@@ -20,6 +20,8 @@ export class FolderStructureComponent implements OnInit {
   folderNameInput: string = "";
   footerSuccessBtn: string = "";
   folderActionDialog: boolean = false;
+  private urlAddition: boolean = false;
+  @Input() newUrl: Folder;
 
   constructor(
     private bmarkService: BmarkerService,
@@ -64,6 +66,26 @@ export class FolderStructureComponent implements OnInit {
         command: (event) => this.deleteFolder(this.selectedFolder),
       },
     ];
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
+    //Add '${implements OnChanges}' to the class.
+
+    // console.log(changes);
+    // console.log(this.selectedFolder);
+
+    // if(changes?.newUrl?.currentValue)
+    // {
+
+    // }
+
+    if (changes.newUrl.currentValue) {
+      this.urlAddition = true;
+      this.onConfirmBtnClick(changes.newUrl.currentValue);
+      this.urlAddition = false;
+      // this.newFolderDialog(changes.newUrl.currentValue);
+    }
   }
 
   /**
@@ -171,7 +193,7 @@ export class FolderStructureComponent implements OnInit {
   }
 
   // Dialog Success button actions
-  onConfirmBtnClick() {
+  onConfirmBtnClick(newUrlNode?: Folder) {
     if (this.footerSuccessBtn.toLowerCase() === "rename") {
       let renameString = this.folderNameInput;
       let renameFolder = {
@@ -207,20 +229,33 @@ export class FolderStructureComponent implements OnInit {
           }
         });
       // this.refreshRoute(decodeURI(this.location.path()));
-    } else if (this.footerSuccessBtn.toLowerCase() === "add") {
-      let newFolderNode = {
-        _id: { $oid: "" },
-        user_id: localStorage.getItem("user"),
-        key: uuidv4(),
-        label: this.folderNameInput,
-        data: this.folderNameInput,
-        expandedIcon: "pi pi-folder-open",
-        collapsedIcon: "pi pi-folder",
-        feature: "folder",
-        children: [],
-        parent: this.selectedFolder.key,
-        leaf: true,
-      };
+    } else if (
+      this.footerSuccessBtn.toLowerCase() === "add" ||
+      this.urlAddition
+    ) {
+      // console.log(this.footerSuccessBtn);
+
+      // console.log(this.urlAddition);
+
+      // console.log(newUrlNode);
+
+      let newFolderNode = this.urlAddition
+        ? newUrlNode
+        : {
+            _id: { $oid: "" },
+            user_id: localStorage.getItem("user"),
+            key: uuidv4(),
+            label: this.folderNameInput,
+            data: this.folderNameInput,
+            expandedIcon: "pi pi-folder-open",
+            collapsedIcon: "pi pi-folder",
+            feature: "folder",
+            children: [],
+            parent: this.selectedFolder.key,
+            leaf: true,
+          };
+
+      // console.log(newFolderNode);
 
       this.bmarkService
         .addNewBmarkFolder(newFolderNode)
@@ -246,7 +281,7 @@ export class FolderStructureComponent implements OnInit {
               }
             });
             // this.refreshRoute(decodeURI(this.location.path()));
-
+            this.selectedFolder.expanded = true;
             this.onFolderClick(this.selectedFolder);
           } else {
             // TODO: Throw Popup Error (folder not added)
@@ -273,18 +308,21 @@ export class FolderStructureComponent implements OnInit {
 
   onFolderClick(event) {
     // console.log("originalEvent" in event);
+    console.log(event);
 
-    // if ("originalEvent" in event) {
-    //   event = event.node.children;
-    // } else {
-    //   event = event.children;
-    // }
+    if ("originalEvent" in event) {
+      this.bmarkService.setCurrentBmarkChildren(event.node.children);
+      this.router.navigate(["/bookmarks", "folders", event.node.key]);
+    } else {
+      this.bmarkService.setCurrentBmarkChildren(event.children);
+      this.router.navigate(["/bookmarks", "folders", event.key]);
+    }
     // this.getFolderData(event.node.child)
 
-    const navArray =
-      "originalEvent" in event ? event.node.children : event.children;
-    this.bmarkService.setCurrentBmarkChildren(navArray);
-    // this.router.navigate(["/bookmarks", "folders", event.node.key]);
+    // const navArray =
+    //   "originalEvent" in event ? event.node.children : event.children;
+    // this.bmarkService.setCurrentBmarkChildren(navArray);
+    // this.router.navigate(["/bookmarks", "folders", navArray]);
     // this.router.navigate(["/bookmarks", event.node.key], {
     //   state: { child: event.node.children },
     // });

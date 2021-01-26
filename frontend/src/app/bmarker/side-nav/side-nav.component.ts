@@ -7,7 +7,8 @@ import { Router } from "@angular/router";
 import { v4 as uuidv4 } from "uuid";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { BmarkerService } from "../../services/bmarker.service";
-
+import { FolderStructureComponent } from "../folder-structure/folder-structure.component";
+import { Folder } from "src/app/models";
 @Component({
   selector: "app-side-nav",
   templateUrl: "./side-nav.component.html",
@@ -18,6 +19,7 @@ export class SideNavComponent implements OnInit {
   displayURLDialog: boolean = false;
   bmarkerURL: string;
   ref: DynamicDialogRef;
+  urlNode: Folder;
   constructor(
     public dialogService: DialogService,
     private messageService: MessageService,
@@ -74,8 +76,10 @@ export class SideNavComponent implements OnInit {
       feature: "URLlink",
       children: [],
       parent: parentKey,
+      styleClass: "display-none",
       leaf: true,
     };
+    this.urlNode = URLNode;
 
     this.bmarkService.addNewBmarkURL(URLNode).subscribe((response) => {
       console.log(
@@ -83,10 +87,14 @@ export class SideNavComponent implements OnInit {
       );
       if (response["status"] === "urlAdded") {
         // this.router.navigate([decodeURI(this.location.path())]);
+        // this.bmarkService.setCurrentBmarkChildren(
+        //   response["siblings"][0]["children"]
+        // );
+        this.router.navigate(["bookmarks", "folders", parentKey]);
 
-        this.router.navigate([decodeURI(this.location.path())], {
-          skipLocationChange: true,
-        });
+        // this.router.navigate([decodeURI(this.location.path())], {
+        //   skipLocationChange: true,
+        // });
 
         // this.router
         //   .navigateByUrl("/", { skipLocationChange: true })

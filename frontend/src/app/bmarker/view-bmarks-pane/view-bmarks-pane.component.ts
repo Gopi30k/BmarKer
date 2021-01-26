@@ -4,11 +4,12 @@ import { TreeNode } from "primeng/api";
 import { Observable, Subject } from "rxjs";
 import { map } from "rxjs/operators";
 import { BmarkerService } from "../../services/bmarker.service";
-
+import { FolderStructureComponent } from "../folder-structure/folder-structure.component";
 @Component({
   selector: "app-view-bmarks-pane",
   templateUrl: "./view-bmarks-pane.component.html",
   styleUrls: ["./view-bmarks-pane.component.scss"],
+  providers: [FolderStructureComponent],
 })
 export class ViewBmarksPaneComponent implements OnInit {
   bmarks: any;
@@ -24,7 +25,8 @@ export class ViewBmarksPaneComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private bmarkService: BmarkerService,
-    private router: Router
+    private router: Router,
+    private folderComponent: FolderStructureComponent
   ) {
     // this.router.routeReuseStrategy.shouldReuseRoute = function () {
     //   return false;
@@ -68,5 +70,12 @@ export class ViewBmarksPaneComponent implements OnInit {
     // this.bmarkService.commonCollection$.subscribe((d) => console.log(d));
     // this.bmarkService.bkFolderCollection$.subscribe((d) => console.log(d));
     // this.bkURLLinkCollection$.subscribe((d) => console.log(d));
+  }
+
+  navigateFolder(folder) {
+    console.log(folder);
+
+    // this.router.navigate(["/bookmarks", "folders", folder]);
+    this.folderComponent.onFolderClick(folder);
   }
 }
