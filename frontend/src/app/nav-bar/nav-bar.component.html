@@ -1,14 +1,13 @@
-<div class="nav-bar">
+<!-- <div class="nav-bar">
   <h1 style="color: #007ad9" [routerLink]="['/']">Bmarker</h1>
   <div class="search-bookmarks">
-    <!-- <fa name="search"></fa> -->
-    <!-- <input type="text" name="Search" id="search-bookmark" /> -->
+
   </div>
-  <!-- <fa name="user-circle" size="2x" id="account-icon"></fa> -->
+
   <div class="account-settings">
     <p-overlayPanel #op>
       <ng-template pTemplate>
-        <!-- <div class="account">Account Settings</div> -->
+
         <button
           pButton
           type="button"
@@ -26,4 +25,32 @@
       pButton
     ></button>
   </div>
-</div>
+</div> -->
+
+<mat-toolbar id="nav-bar">
+  <mat-toolbar-row>
+    <h1>Bmarker</h1>
+    <span class="example-spacer"></span>
+    <div class="account-settings">
+      <p-overlayPanel #op>
+        <ng-template pTemplate>
+          <button
+            pButton
+            type="button"
+            label="Logout"
+            (click)="authService.logOutUser(op)"
+          ></button>
+        </ng-template>
+      </p-overlayPanel>
+
+      <button
+        type="text"
+        *ngIf="authService.isUserLoggedIn()"
+        label="G"
+        class="account-setting"
+        (click)="op.toggle($event)"
+        pButton
+      ></button>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>

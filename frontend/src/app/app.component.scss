@@ -1,0 +1,13 @@
+#bmarker {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+nav {
+  margin: 8px;
+}
+
+main {
+  overflow: auto;
+  flex-grow: 1;
+}

@@ -78,4 +78,8 @@ export class ViewBmarksPaneComponent implements OnInit {
     // this.router.navigate(["/bookmarks", "folders", folder]);
     this.folderComponent.onFolderClick(folder);
   }
+
+  goToLink(url: string) {
+    window.open(url, "_blank");
+  }
 }

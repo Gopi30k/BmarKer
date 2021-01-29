@@ -81,27 +81,27 @@ export class SideNavComponent implements OnInit {
     };
     this.urlNode = URLNode;
 
-    this.bmarkService.addNewBmarkURL(URLNode).subscribe((response) => {
-      console.log(
-        `API responded on Folder addition - ${JSON.stringify(response)}`
-      );
-      if (response["status"] === "urlAdded") {
-        // this.router.navigate([decodeURI(this.location.path())]);
-        // this.bmarkService.setCurrentBmarkChildren(
-        //   response["siblings"][0]["children"]
-        // );
-        this.router.navigate(["bookmarks", "folders", parentKey]);
+    // this.bmarkService.addNewBmarkURL(URLNode).subscribe((response) => {
+    //   console.log(
+    //     `API responded on Folder addition - ${JSON.stringify(response)}`
+    //   );
+    //   if (response["status"] === "urlAdded") {
+    //     // this.router.navigate([decodeURI(this.location.path())]);
+    //     // this.bmarkService.setCurrentBmarkChildren(
+    //     //   response["siblings"][0]["children"]
+    //     // );
+    //     this.router.navigate(["bookmarks", "folders", parentKey]);
 
-        // this.router.navigate([decodeURI(this.location.path())], {
-        //   skipLocationChange: true,
-        // });
+    //     // this.router.navigate([decodeURI(this.location.path())], {
+    //     //   skipLocationChange: true,
+    //     // });
 
-        // this.router
-        //   .navigateByUrl("/", { skipLocationChange: true })
-        //   .then(() => {
-        //     this.router.navigate([this.router.url]);
-        //   });
-      }
-    });
+    //     // this.router
+    //     //   .navigateByUrl("/", { skipLocationChange: true })
+    //     //   .then(() => {
+    //     //     this.router.navigate([this.router.url]);
+    //     //   });
+    //   }
+    // });
   }
 }

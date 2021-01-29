@@ -18,12 +18,14 @@
     <h2>Links</h2>
     <div id="links-container">
       <ng-container *ngFor="let link of links">
-        <p-card [style]="{ width: '260px' }">
-          <p-header>
+        <div class="url-card" (click)="goToLink(link.data)">
+          <div id="header">
             {{ link.label }}
-          </p-header>
-          {{ link.data }}
-        </p-card>
+          </div>
+          <div id="url-address">
+            {{ link.data }}
+          </div>
+        </div>
       </ng-container>
     </div>
   </div>

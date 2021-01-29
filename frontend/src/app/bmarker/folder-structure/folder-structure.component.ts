@@ -36,10 +36,10 @@ export class FolderStructureComponent implements OnInit {
       b_type: "all",
     };
     this.bmarkService.getFolderOnlyObs(userBookmarkReqObj);
-    this.bmarkService.folderOnlyCollection$.subscribe((api_data) => {
+    this.bmarkService.folderOnlyCollection$.subscribe((api_data: Folder[]) => {
       // this.folders = this.getFolderData(api_data);
-      console.log(api_data);
       this.folders = api_data;
+      this.bmarkService.setCurrentBmarkChildren(api_data[0].children);
     });
 
     console.log(this.folders);
@@ -257,36 +257,73 @@ export class FolderStructureComponent implements OnInit {
 
       // console.log(newFolderNode);
 
-      this.bmarkService
-        .addNewBmarkFolder(newFolderNode)
-        .subscribe((response) => {
-          console.log(
-            `API responded on Folder addition - ${JSON.stringify(response)}`
-          );
-          if (response["status"] === "added") {
-            this.folders.forEach((fold, index) => {
-              if (
-                fold.key.toLowerCase() === this.selectedFolder.key.toLowerCase()
-              ) {
-                this.folders[index].children !== undefined
-                  ? this.folders[index].children.push(newFolderNode)
-                  : (this.folders[index].children = [newFolderNode]);
-              } else {
-                this.nodeRecursiveAction(
-                  fold,
-                  this.selectedFolder,
-                  "add",
-                  newFolderNode
-                );
-              }
-            });
-            // this.refreshRoute(decodeURI(this.location.path()));
-            this.selectedFolder.expanded = true;
-            this.onFolderClick(this.selectedFolder);
-          } else {
-            // TODO: Throw Popup Error (folder not added)
-          }
-        });
+      //TODO: Temp URLnode addition logic need to be Simplified
+
+      if (this.urlAddition) {
+        this.bmarkService
+          .addNewBmarkURL(newFolderNode)
+          .subscribe((response) => {
+            console.log(
+              `API responded on URL Node addition - ${JSON.stringify(response)}`
+            );
+            if (response["status"] === "urlAdded") {
+              this.folders.forEach((fold, index) => {
+                if (
+                  fold.key.toLowerCase() ===
+                  this.selectedFolder.key.toLowerCase()
+                ) {
+                  this.folders[index].children !== undefined
+                    ? this.folders[index].children.push(newFolderNode)
+                    : (this.folders[index].children = [newFolderNode]);
+                } else {
+                  this.nodeRecursiveAction(
+                    fold,
+                    this.selectedFolder,
+                    "add",
+                    newFolderNode
+                  );
+                }
+              });
+              // this.refreshRoute(decodeURI(this.location.path()));
+              this.selectedFolder.expanded = true;
+              this.onFolderClick(this.selectedFolder);
+            } else {
+              // TODO: Throw Popup Error (folder not added)
+            }
+          });
+      } else {
+        this.bmarkService
+          .addNewBmarkFolder(newFolderNode)
+          .subscribe((response) => {
+            console.log(
+              `API responded on Folder addition - ${JSON.stringify(response)}`
+            );
+            if (response["status"] === "added") {
+              this.folders.forEach((fold, index) => {
+                if (
+                  fold.key.toLowerCase() ===
+                  this.selectedFolder.key.toLowerCase()
+                ) {
+                  this.folders[index].children !== undefined
+                    ? this.folders[index].children.push(newFolderNode)
+                    : (this.folders[index].children = [newFolderNode]);
+                } else {
+                  this.nodeRecursiveAction(
+                    fold,
+                    this.selectedFolder,
+                    "add",
+                    newFolderNode
+                  );
+                }
+              });
+              // this.refreshRoute(decodeURI(this.location.path()));
+              this.selectedFolder.expanded = true;
+              this.onFolderClick(this.selectedFolder);
+            } else {
+              // TODO: Throw Popup Error (folder not added)
+            }
+          });
+      }
     }
     this.folderActionDialog = false;
   }

@@ -1,0 +1,15 @@
+.bmarker-container {
+  width: 100%;
+  margin: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.bmarker-sidenav {
+  width: 250px;
+  // border: 1px solid #555;
+  border-radius: 6px;
+  // margin: 8px;
+  // box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}

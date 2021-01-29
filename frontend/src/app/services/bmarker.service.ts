@@ -1,5 +1,6 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
 import { from, Observable, of, Subject, throwError } from "rxjs";
 import {
   filter,
@@ -30,7 +31,7 @@ export class BmarkerService {
 
   private bkURLLinkCollection: Subject<any> = new Subject<any>();
   bkURLLinkCollection$: Observable<any> = this.bkURLLinkCollection.asObservable();
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   signupUser(userData: Object) {
     return this.http
@@ -61,17 +62,24 @@ export class BmarkerService {
   getFolderOnlyObs(userBmarkObj) {
     this.http
       .post<Folder[]>("http://127.0.0.1:5000/", userBmarkObj)
+      .pipe(catchError(this.handleError))
       // .pipe(
       //   map((d) =>
       //     d["data"][0]["children"].filter((f) => f.feature == "folder")
       //   ),
       //   tap((api_data) => console.log(api_data))
       // )
-      .subscribe((data) => {
-        // console.log(data);
-        this.folderOnlyCollection.next(data["data"]);
-        // this.folderOnlyCollections.next(data);
-      });
+      .subscribe(
+        (data) => {
+          // console.log(data);
+          this.folderOnlyCollection.next(data["data"]);
+          // this.folderOnlyCollections.next(data);
+        },
+        (err) => {
+          this.router.navigate(["/login"]);
+          // console.log(err);
+        }
+      );
 
     // [this.bkFolderCollection$, this.bkURLLinkCollection$] = partition(
     //   this.folderOnlyCollections,
