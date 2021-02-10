@@ -1,4 +1,4 @@
-<div id="body-container">
+<!-- <div id="body-container">
   <mat-sidenav-container class="bmarker-container">
     <mat-sidenav
       #sidenav
@@ -14,4 +14,12 @@
       <router-outlet></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>
+</div> -->
+<div id="body-container">
+  <div class="side-nav">
+    <app-side-nav></app-side-nav>
+  </div>
+  <div class="main-pane">
+    <router-outlet></router-outlet>
+  </div>
 </div>
