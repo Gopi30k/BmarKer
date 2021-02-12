@@ -8,15 +8,14 @@ import { BmarkerComponent } from "./bmarker.component";
 import { SideNavComponent } from "./side-nav/side-nav.component";
 import { FolderStructureComponent } from "./folder-structure/folder-structure.component";
 import { ViewBmarksPaneComponent } from "./view-bmarks-pane/view-bmarks-pane.component";
-import { BookmarkPaneComponent } from "./bookmark-pane/bookmark-pane.component";
-
+import { NavBarComponent } from "../nav-bar/nav-bar.component";
 @NgModule({
   declarations: [
     BmarkerComponent,
     SideNavComponent,
     FolderStructureComponent,
     ViewBmarksPaneComponent,
-    BookmarkPaneComponent,
+    NavBarComponent,
   ],
   imports: [
     CommonModule,

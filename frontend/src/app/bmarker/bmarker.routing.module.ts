@@ -3,12 +3,11 @@ import { Routes, RouterModule } from "@angular/router";
 import { SideNavComponent } from "./side-nav/side-nav.component";
 import { ViewBmarksPaneComponent } from "./view-bmarks-pane/view-bmarks-pane.component";
 import { BmarkerComponent } from "./bmarker.component";
-import { BookmarkPaneComponent } from "./bookmark-pane/bookmark-pane.component";
 
 const routes: Routes = [
   {
     path: "folders",
-    component: BookmarkPaneComponent,
+    component: BmarkerComponent,
     children: [
       {
         path: ":folder",

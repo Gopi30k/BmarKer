@@ -35,4 +35,18 @@
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container> -->
-<router-outlet></router-outlet>
+<div id="bmarker">
+  <nav>
+    <app-nav-bar></app-nav-bar>
+  </nav>
+  <main>
+    <div id="body-container">
+      <div class="side-nav">
+        <app-side-nav></app-side-nav>
+      </div>
+      <div class="main-pane">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </main>
+</div>

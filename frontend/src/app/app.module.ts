@@ -14,7 +14,7 @@ import { AngularFireModule } from "@angular/fire";
 import { environment } from "../environments/environment";
 import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { AngularFireDatabaseModule } from "@angular/fire/database";
-import { NavBarComponent } from "./nav-bar/nav-bar.component";
+// import { NavBarComponent } from "./nav-bar/nav-bar.component";
 import { AngularFontAwesomeModule } from "angular-font-awesome";
 // import { BmarkerComponent } from "./bmarker/bmarker.component";
 import { SignupComponent } from "./signup/signup.component";
@@ -28,7 +28,7 @@ import { HttpCallInterceptorService } from "./services/http-call-interceptor.ser
     // FolderStructureComponent,
     // ViewBmarksPaneComponent,
     // SideNavComponent,
-    NavBarComponent,
+    // NavBarComponent,
     // BmarkerComponent,
     SignupComponent,
     LoginComponent,

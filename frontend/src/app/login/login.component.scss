@@ -1,13 +1,78 @@
-.signin {
-  display: flex;
-  padding: 32px;
-  #signin-form {
-    flex: 50%;
-    .signin-btn {
-      padding-left: 8px;
-    }
+#login-container {
+  // position: relative;
+  margin: auto;
+  .triangle {
+    // position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    margin-left: -16px;
+    border-left: 187px solid transparent;
+    border-right: 187px solid transparent;
+    border-bottom: 103px solid #f2f3f5;
   }
-  #signin-context {
-    flex: 50%;
+  .login-bg-card {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 375px;
+    padding: 16px;
+    margin: 60px auto;
+    height: 485px;
+    z-index: 0;
+    background-color: red;
+    // border-radius: 32px;
+  }
+  .login-card {
+    // position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #fff;
+    z-index: 1;
+    width: 375px;
+    padding: 16px;
+    margin: 60px auto;
+    height: 485px;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    border-top-left-radius: 32px;
+    border-top-right-radius: 32px;
+    box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px,
+      rgb(60 64 67 / 15%) 0px 1px 3px 1px;
+
+    h1 {
+      font-family: "Pacifico", cursive;
+      text-align: center;
+      color: #007ad9;
+      letter-spacing: 1px;
+    }
+
+    h2 {
+      margin: 16px;
+    }
+
+    #login-form {
+      margin: 16px;
+      .login-field {
+        display: flex;
+        flex-direction: column;
+        label,
+        input {
+          margin-bottom: 1rem;
+        }
+      }
+      #signin-btn,
+      #signup-text {
+        margin-bottom: 1rem;
+      }
+    }
   }
 }
