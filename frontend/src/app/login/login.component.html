@@ -1,5 +1,4 @@
-<div id="login-container">
-  <!-- <div class="login-bg-card"></div> -->
+<!-- <div id="login-container">
   <div class="login-card">
     <h1 id="app-heading">Bmarker</h1>
     <h2 id="login-header">Log in.</h2>
@@ -42,6 +41,60 @@
       </div>
     </form>
     <div class="triangle"></div>
+  </div>
+</div>
+<p-toast [preventOpenDuplicates]="true" position="bottom-center"></p-toast> -->
+<div id="login-container">
+  <div class="login-illustration">
+    <div class="header">
+      <h1>Bmarker</h1>
+      <h4>A better place to organize your bookmarks</h4>
+    </div>
+    <img src="../../assets/login-illustration.svg" alt="Login Illustration" />
+  </div>
+  <div class="login-form">
+    <!-- <div id="login-card"> -->
+    <div class="header">
+      <h1 id="login-header">Log in.</h1>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="loginForm.valid && loginUser()">
+      <div class="login-field">
+        <label for="email">EMAIL</label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          autocomplete="off"
+          formControlName="email"
+          pInputText
+        />
+      </div>
+      <div class="login-field">
+        <label for="password">PASSWORD</label>
+        <input
+          id="password"
+          type="password"
+          name="password"
+          formControlName="password"
+          pInputText
+        />
+      </div>
+      <div id="signin-btn">
+        <button
+          pButton
+          type="submit"
+          label="Log In"
+          class="ui-button-raised"
+        ></button>
+      </div>
+      <div id="signup-text">
+        <h5>
+          Don't have an Account ? <a [routerLink]="['/signup']">Sign up</a>
+        </h5>
+      </div>
+    </form>
+    <!-- </div> -->
   </div>
 </div>
 <p-toast [preventOpenDuplicates]="true" position="bottom-center"></p-toast>

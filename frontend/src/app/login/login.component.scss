@@ -1,77 +1,67 @@
 #login-container {
-  // position: relative;
-  margin: auto;
-  .triangle {
-    // position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 0;
-    height: 0;
-    margin-left: -16px;
-    border-left: 187px solid transparent;
-    border-right: 187px solid transparent;
-    border-bottom: 103px solid #f2f3f5;
-  }
-  .login-bg-card {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 375px;
-    padding: 16px;
-    margin: 60px auto;
-    height: 485px;
-    z-index: 0;
-    background-color: red;
-    // border-radius: 32px;
-  }
-  .login-card {
-    // position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #fff;
-    z-index: 1;
-    width: 375px;
-    padding: 16px;
-    margin: 60px auto;
-    height: 485px;
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  .login-illustration {
+    flex: 50%;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
+    padding: 24px;
+    background-color: #f4f7fe;
+    .header {
+      margin: 24px 0;
+      h1 {
+        font-family: "Pacifico", cursive;
+        color: #5456ff;
+      }
+      h4 {
+        color: #3f3d56;
+      }
+    }
+
+    img {
+      width: 450px;
+      height: 450px;
+    }
+  }
+  .login-form {
+    flex: 50%;
+    display: flex;
     flex-direction: column;
     align-items: center;
-    border-top-left-radius: 32px;
-    border-top-right-radius: 32px;
-    box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px,
-      rgb(60 64 67 / 15%) 0px 1px 3px 1px;
-
-    h1 {
-      font-family: "Pacifico", cursive;
-      text-align: center;
-      color: #007ad9;
-      letter-spacing: 1px;
-    }
-
-    h2 {
-      margin: 16px;
-    }
-
-    #login-form {
-      margin: 16px;
-      .login-field {
-        display: flex;
-        flex-direction: column;
-        label,
-        input {
-          margin-bottom: 1rem;
-        }
+    justify-content: center;
+    .header {
+      margin: 24px 0;
+      h1 {
+        text-align: left;
+        color: #3f3d56;
       }
-      #signin-btn,
-      #signup-text {
+    }
+    .login-field {
+      display: flex;
+      flex-direction: column;
+      label,
+      input {
         margin-bottom: 1rem;
+      }
+      label {
+        color: #3f3d56;
+        font-size: 13px;
+        font-weight: bold;
+      }
+    }
+    #signin-btn {
+      margin-bottom: 16px;
+      button {
+        background-color: #5456ff;
+        border: 1px solid #5456ff;
+      }
+    }
+    #signup-text {
+      color: #3f3d56;
+      a {
+        color: #5456ff;
       }
     }
   }

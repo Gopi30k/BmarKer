@@ -1,147 +1,160 @@
-<div class="signup">
-  <div id="signup-context">
-    <h2>SIGN UP</h2>
-    <p>to manage your cluttered bookmarks at one place</p>
+<div id="signup-container">
+  <div id="signup-illustration">
+    <div class="header">
+      <h1>Bmarker</h1>
+      <h4>Manage your cluttered bookmarks at one place</h4>
+    </div>
+    <img src="../../assets/signup-illustration.svg" alt="Login Illustration" />
   </div>
-  <form id="signup-form" [formGroup]="signupForm" (ngSubmit)="signupUser()">
-    <div class="ui-fluid p-grid">
-      <div class="p-field p-col-12 p-md-6">
-        <label for="firstname">FirstName</label>
-        <input
-          id="firstname"
-          type="text"
-          formControlName="firstName"
-          autocomplete="off"
-          pInputText
-        />
-        <span
-          class="text-danger"
-          *ngIf="
-            (signupFormControl.firstName.touched || submitted) &&
-            signupFormControl.firstName.errors?.required
-          "
-        >
-          First Name is required
-        </span>
-      </div>
-      <div class="p-field p-col-12 p-md-6">
-        <label for="lastname">LastName</label>
-        <input
-          id="lastname"
-          type="text"
-          formControlName="lastName"
-          autocomplete="off"
-          pInputText
-        />
-        <span
-          class="text-danger"
-          *ngIf="
-            (signupFormControl.lastName.touched || submitted) &&
-            signupFormControl.lastName.errors?.required
-          "
-        >
-          Last Name is required
-        </span>
-      </div>
-      <div class="p-field p-col-12 p-md-12">
-        <label for="email">Email</label>
-        <input
-          id="email"
-          type="email"
-          name="email"
-          autocomplete="off"
-          formControlName="email"
-          pInputText
-        />
-        <span
-          class="text-danger"
-          *ngIf="
-            (signupFormControl.email.touched || submitted) &&
-            signupFormControl.email.errors?.required
-          "
-        >
-          Email is required
-        </span>
-        <span
-          class="text-danger"
-          *ngIf="
-            signupFormControl.email.touched &&
-            signupFormControl.email.errors?.email
-          "
-        >
-          Enter a valid email address
-        </span>
-      </div>
-      <div class="p-field p-col-12 p-md-6">
-        <div class="p-field">
-          <label for="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            name="password"
-            autocomplete="off"
-            formControlName="password"
-            pPassword
-          />
-          <span
-            class="text-danger"
-            *ngIf="
-              (signupFormControl.password.touched || submitted) &&
-              signupFormControl.password.errors?.required
-            "
-          >
-            Password is required
-          </span>
-          <span
-            class="text-danger"
-            *ngIf="
-              signupFormControl.password.touched &&
-              signupFormControl.password.errors?.invalidPassword
-            "
-          >
-            Password should have minimum 8 characters, at least 1 uppercase
-            letter, 1 lowercase letter and 1 number
-          </span>
-        </div>
-        <div class="p-field">
-          <label for="confirmPassword">Confirm Password</label>
-          <input
-            id="confirmPassword"
-            type="password"
-            name="confirmPassword"
-            autocomplete="off"
-            formControlName="confirmPassword"
-            pInputText
-          />
-          <span
-            class="text-danger"
-            *ngIf="
-              (signupFormControl.confirmPassword.touched || submitted) &&
-              signupFormControl.confirmPassword.errors?.required
-            "
-          >
-            Confirm Password is required
-          </span>
-          <span
-            class="text-danger"
-            *ngIf="
-              signupFormControl.confirmPassword.touched &&
-              signupFormControl.confirmPassword.errors?.passwordMismatch
-            "
-          >
-            Passwords does not match
-          </span>
-        </div>
-      </div>
+  <div id="form-container">
+    <div class="header">
+      <h1 id="signup-header">Sign Up.</h1>
     </div>
-    <div class="signup-btn">
-      <button
-        type="submit"
-        label="Sign Up"
-        class="ui-button-raised"
-        pButton
-      ></button>
+    <div class="signup-form">
+      <form [formGroup]="signupForm" (ngSubmit)="signupUser()">
+        <div class="ui-fluid p-grid">
+          <div class="p-field p-col-12 p-md-6">
+            <label for="firstname">First Name</label>
+            <input
+              id="firstname"
+              type="text"
+              formControlName="firstName"
+              autocomplete="off"
+              pInputText
+            />
+            <span
+              class="text-danger"
+              *ngIf="
+                (signupFormControl.firstName.touched || submitted) &&
+                signupFormControl.firstName.errors?.required
+              "
+            >
+              First Name is required
+            </span>
+          </div>
+          <div class="p-field p-col-12 p-md-6">
+            <label for="lastname">Last Name</label>
+            <input
+              id="lastname"
+              type="text"
+              formControlName="lastName"
+              autocomplete="off"
+              pInputText
+            />
+            <span
+              class="text-danger"
+              *ngIf="
+                (signupFormControl.lastName.touched || submitted) &&
+                signupFormControl.lastName.errors?.required
+              "
+            >
+              Last Name is required
+            </span>
+          </div>
+          <div class="p-field p-col-12 p-md-12">
+            <label for="email">Email</label>
+            <input
+              id="email"
+              type="email"
+              name="email"
+              autocomplete="off"
+              formControlName="email"
+              pInputText
+            />
+            <span
+              class="text-danger"
+              *ngIf="
+                (signupFormControl.email.touched || submitted) &&
+                signupFormControl.email.errors?.required
+              "
+            >
+              Email is required
+            </span>
+            <span
+              class="text-danger"
+              *ngIf="
+                signupFormControl.email.touched &&
+                signupFormControl.email.errors?.email
+              "
+            >
+              Enter a valid email address
+            </span>
+          </div>
+          <div class="p-field p-col-12 p-md-6">
+            <div class="p-field">
+              <label for="password">Password</label>
+              <input
+                id="password"
+                type="password"
+                name="password"
+                autocomplete="off"
+                formControlName="password"
+                pPassword
+              />
+              <span
+                class="text-danger"
+                *ngIf="
+                  (signupFormControl.password.touched || submitted) &&
+                  signupFormControl.password.errors?.required
+                "
+              >
+                Password is required
+              </span>
+              <span
+                class="text-danger"
+                *ngIf="
+                  signupFormControl.password.touched &&
+                  signupFormControl.password.errors?.invalidPassword
+                "
+              >
+                Password should have minimum 8 characters, at least 1 uppercase
+                letter, 1 lowercase letter and 1 number
+              </span>
+            </div>
+            <div class="p-field">
+              <label for="confirmPassword">Confirm Password</label>
+              <input
+                id="confirmPassword"
+                type="password"
+                name="confirmPassword"
+                autocomplete="off"
+                formControlName="confirmPassword"
+                pInputText
+              />
+              <span
+                class="text-danger"
+                *ngIf="
+                  (signupFormControl.confirmPassword.touched || submitted) &&
+                  signupFormControl.confirmPassword.errors?.required
+                "
+              >
+                Confirm Password is required
+              </span>
+              <span
+                class="text-danger"
+                *ngIf="
+                  signupFormControl.confirmPassword.touched &&
+                  signupFormControl.confirmPassword.errors?.passwordMismatch
+                "
+              >
+                Passwords does not match
+              </span>
+            </div>
+          </div>
+        </div>
+        <div id="btm">
+          <button
+            type="submit"
+            label="Sign Up"
+            class="ui-button-raised"
+            pButton
+          ></button>
+          <h5>
+            Already have an Account ? <a [routerLink]="['/login']">Log In</a>
+          </h5>
+        </div>
+      </form>
     </div>
-  </form>
+  </div>
 </div>
 <p-toast [preventOpenDuplicates]="true" position="bottom-center"></p-toast>
