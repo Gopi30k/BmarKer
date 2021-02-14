@@ -33,10 +33,11 @@ export class BmarkerService {
   bkURLLinkCollection$: Observable<any> = this.bkURLLinkCollection.asObservable();
   constructor(private http: HttpClient, private router: Router) {}
 
+  private api_url: string = "http://127.0.0.1:8080/bmarker/";
   signupUser(userData: Object) {
     return this.http
       .post(
-        "http://127.0.0.1:5000/signup",
+        `${this.api_url}signup`,
         { signup: userData },
         { observe: "response" }
       )
@@ -46,7 +47,7 @@ export class BmarkerService {
   loginUser(userData: Object) {
     return this.http
       .post(
-        "http://127.0.0.1:5000/login",
+        `${this.api_url}login`,
         { login: userData },
         { observe: "response" }
       )
@@ -55,13 +56,13 @@ export class BmarkerService {
 
   getAllBookmarks() {
     return this.http
-      .get<Folder[]>("http://127.0.0.1:5000/")
+      .get<Folder[]>(`${this.api_url}`)
       .pipe(map((data) => data["data"]));
   }
 
   getFolderOnlyObs(userBmarkObj) {
     this.http
-      .post<Folder[]>("http://127.0.0.1:5000/", userBmarkObj)
+      .post<Folder[]>(`${this.api_url}`, userBmarkObj)
       .pipe(catchError(this.handleError))
       // .pipe(
       //   map((d) =>
@@ -115,7 +116,7 @@ export class BmarkerService {
   getFolderSubCollections(key: string) {
     if (key !== null) {
       return this.http
-        .post<Folder[]>("http://127.0.0.1:5000/", {
+        .post<Folder[]>(this.api_url, {
           // user_id: localStorage.getItem("user"),
           bookmark_key: key,
           b_type: "all",
@@ -176,26 +177,26 @@ export class BmarkerService {
   }
 
   addNewBmarkFolder(newFolder: Folder) {
-    return this.http.post<Folder>("http://127.0.0.1:5000/addFolder", {
+    return this.http.post<Folder>(`${this.api_url}addFolder`, {
       folder: newFolder,
     });
   }
 
   renameBmarkFolder(folderToRenameKey: string, renameFolder: Folder) {
-    return this.http.post<Folder>("http://127.0.0.1:5000/renameFolder", {
+    return this.http.post<Folder>(`${this.api_url}renameFolder`, {
       key: folderToRenameKey,
       renameFolder,
     });
   }
 
   deleteBmarkFolder(folderToDelKey: string) {
-    return this.http.post<Folder>("http://127.0.0.1:5000/deleteFolder", {
+    return this.http.post<Folder>(`${this.api_url}deleteFolder`, {
       key: folderToDelKey,
     });
   }
 
   addNewBmarkURL(URLNode) {
-    return this.http.post<any>("http://127.0.0.1:5000/addURL", {
+    return this.http.post<any>(`${this.api_url}addURL`, {
       URLNode: URLNode,
     });
   }

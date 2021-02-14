@@ -10,19 +10,18 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    print(os.environ.get("MONGO_DB_URI"))
-    MONGO_URI = os.environ.get("MONGO_DB_URI")
+    MONGO_URI = os.environ.get("MONGO_URI")
 
 
 class TestingConfig(Config):
     DEBUG = True
     TESTING = True
-    MONGO_URI = os.environ.get("MONGO_DB_URI")
+    MONGO_URI = os.environ.get("MONGO_URI")
 
 
 class ProductionConfig(Config):
     DEBUG = False
-    MONGO_URI = os.environ.get("MONGO_DB_URI")
+    MONGO_URI = os.environ.get("MONGO_URI")
 
 
 config_by_name = dict(
