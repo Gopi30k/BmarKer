@@ -8,8 +8,13 @@
 
       .ui-tree-container {
         .ui-treenode {
-          .ui-treenode-content:focus {
-            box-shadow: none;
+          .ui-treenode-content {
+            &:focus {
+              box-shadow: none;
+            }
+            .ui-treenode-label.ui-state-highlight {
+              background-color: var(--bmarker-primary-color);
+            }
           }
         }
       }

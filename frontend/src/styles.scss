@@ -10,6 +10,10 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+:root {
+  --bmarker-primary-color: #5456ff;
+  --bmarker-secondary-color: #3f3d56;
+}
 /* width */
 ::-webkit-scrollbar {
   width: 8px;

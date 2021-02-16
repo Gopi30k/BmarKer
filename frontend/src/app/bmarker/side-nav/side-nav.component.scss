@@ -1,3 +1,21 @@
 .side-nav {
   margin: 16px;
+  .add-bmk-btn {
+    background-color: var(--bmarker-secondary-color);
+    border: 1px solid var(--bmarker-secondary-color);
+    font-size: 14px;
+    color: #ffffff;
+    border-radius: 7px;
+    padding: 8px;
+    cursor: pointer;
+    outline: none;
+    // transition: background-color 0.2s, box-shadow 0.2s;
+    &:hover {
+      opacity: 0.8;
+    }
+
+    i {
+      margin: 0 2px;
+    }
+  }
 }

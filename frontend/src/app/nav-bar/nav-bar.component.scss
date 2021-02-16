@@ -31,7 +31,7 @@
   h1 {
     font-family: "Pacifico", cursive;
     cursor: pointer;
-    color: #007ad9;
+    color: var(--bmarker-primary-color);
     letter-spacing: 1px;
   }
 
@@ -41,7 +41,7 @@
   }
 
   .account-setting {
-    background-color: #007ad9;
+    background-color: var(--bmarker-primary-color);
     height: 40px;
     width: 40px;
     color: #fff;

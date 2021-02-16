@@ -3,14 +3,22 @@
     <h2>Folders</h2>
     <div id="folder-container">
       <ng-container *ngFor="let folder of folders">
-        <p-button
+        <!-- <p-button
           label="{{ folder.label }}"
           icon="pi pi-folder"
           iconPos="left"
           class="folder-box"
           (click)="navigateFolder(folder)"
-        ></p-button>
+        ></p-button> -->
+
+        <button class="bmk-folder" (click)="navigateFolder(folder)">
+          <i class="pi pi-folder"></i>
+          <span>{{ folder.label }}</span>
+        </button>
       </ng-container>
+      <div *ngIf="!folders || folders.length === 0" class="empty-text">
+        No Folders Found
+      </div>
     </div>
   </div>
 
@@ -27,6 +35,9 @@
           </div>
         </div>
       </ng-container>
+      <div *ngIf="!links || links.length === 0" class="empty-text">
+        No Bookmarks added
+      </div>
     </div>
   </div>
 </div>

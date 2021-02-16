@@ -37,14 +37,18 @@
 </p-dialog>
 
 <div class="side-nav">
-  <button
+  <!-- <button
     pButton
     type="button"
     class="ui-button-raised"
     label="Add Bookmark"
     icon="pi pi-bookmark"
     (click)="addBookmark()"
-  ></button>
+  ></button> -->
+  <button (click)="addBookmark()" class="add-bmk-btn">
+    <i class="fa fa-bookmark" aria-hidden="true"></i>
+    <span class="btn-text"> Add Bookmark </span>
+  </button>
   <p-toast position="top-center" key="tc"></p-toast>
   <app-folder-structure [newUrl]="urlNode"></app-folder-structure>
 </div>

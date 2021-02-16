@@ -13,7 +13,6 @@ import uuid
 import bcrypt
 import os
 import requests
-
 bmarker = Blueprint('bmarker', __name__)
 
 

@@ -32,10 +32,10 @@
       margin: 24px 0;
       h1 {
         font-family: "Pacifico", cursive;
-        color: #5456ff;
+        color: var(--bmarker-primary-color);
       }
       h4 {
-        color: #3f3d56;
+        color: var(--bmarker-secondary-color);
       }
     }
 
@@ -54,12 +54,12 @@
     .header {
       margin: 24px 0;
       h1 {
-        color: #3f3d56;
+        color: var(--bmarker-secondary-color);
       }
     }
     .signup-form {
       label {
-        color: #3f3d56;
+        color: var(--bmarker-secondary-color);
         font-size: 13px;
         font-weight: bold;
       }
@@ -73,13 +73,13 @@
         gap: 32px;
         align-items: center;
         button {
-          background-color: #5456ff;
-          border-color: #5456ff;
+          background-color: var(--bmarker-primary-color);
+          border-color: var(--bmarker-primary-color);
         }
         h5 {
-          color: #3f3d56;
+          color: var(--bmarker-secondary-color);
           a {
-            color: #5456ff;
+            color: var(--bmarker-primary-color);
           }
         }
       }
